@@ -63,7 +63,7 @@ class FindBandsViewController: UIViewController, UITabBarDelegate {
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items?[0]{
-            performSegue(withIdentifier: "JoinBandToPFM", sender: self)
+            performSegue(withIdentifier: "FindBandToFindMusicians", sender: self)
         } else if item == tabBar.items?[1]{
             
             

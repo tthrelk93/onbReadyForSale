@@ -119,7 +119,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             }
         }
         if (segue.identifier! as String) == "BandToArtistProfile"{
-            if let vc = segue.destination as? profileRedesignViewController{
+            if let vc = segue.destination as? profileRedesignViewController {
                 vc.sender = "band"
                 vc.senderID = self.sessionID!
                 print("")

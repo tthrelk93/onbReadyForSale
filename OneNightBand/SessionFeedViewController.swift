@@ -241,9 +241,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
            // self.sessionViewsLabel2.isHidden = false
             //self.sessionNameLabel2.isHidden = true
             tableViewBackView.isHidden = false
-            pickButton.isHidden = false
-            picksLabel.isHidden = false
-            pickCount.isHidden = false
+            pickButton.isHidden = true
+            picksLabel.isHidden = true
+            pickCount.isHidden = true
             cityNameLabel.isHidden = false
            // .isHidden = false
             //sessionLabel.isHidden = false
@@ -529,6 +529,11 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     @IBOutlet weak var pickCount: UILabel!
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        if segue.identifier == "FeedToFindMusicians"{
+            if let vc = segue.destination as? ArtistFinderViewController{
+                
+            }
+        }
         if segue.identifier == "TabBarFeedToProfile" {
             if let vc = segue.destination as? profileRedesignViewController{
                 print("tab")

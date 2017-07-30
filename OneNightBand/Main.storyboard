@@ -1780,7 +1780,7 @@
                                     <action selector="pickButtonPressed:" destination="1xK-g4-WV3" eventType="touchUpInside" id="igw-ge-FZo"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WcV-oY-PfL">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WcV-oY-PfL">
                                 <rect key="frame" x="329" y="285" width="37" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1829,7 +1829,7 @@
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="FeedToProfile" id="Ym2-Ij-d9a"/>
                         <segue destination="Tm4-nj-Rsh" kind="showDetail" identifier="FeedToJoinBand" id="BIm-XO-WxK"/>
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="TabBarFeedToProfile" id="Ed8-Gu-u7u"/>
-                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="FeedToFindMusician" id="GQk-Lo-KWh"/>
+                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="FeedToFindMusicians" id="GQk-Lo-KWh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mDA-1s-0as" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4220,14 +4220,13 @@
                         <segue destination="EI4-f6-CzA" kind="show" identifier="JoinBandToBandBoard" id="4hB-mz-Xfn"/>
                         <segue destination="1xK-g4-WV3" kind="showDetail" identifier="FindBandToFeed" id="eph-X6-6UF"/>
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="FindBandToProfile" id="Vdy-gq-ipH"/>
-                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="FindBandToFindMusician" animates="NO" id="L7a-2i-PZk"/>
+                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="FindBandToFindMusicians" animates="NO" id="L7a-2i-PZk"/>
                         <segue destination="8AT-X1-jeR" kind="showDetail" identifier="FindBandToFindMusicians" id="EiV-My-mMz"/>
-                        <segue destination="btQ-7S-aEN" kind="showDetail" identifier="JoinBandToPFM" id="qyH-TF-vWu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NX7-Pf-8a6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1930.4000000000001" y="1110.4947526236883"/>
+            <point key="canvasLocation" x="-1542" y="1728"/>
         </scene>
         <!--Band Board View Controller-->
         <scene sceneID="5Lo-d9-tIV">
@@ -4555,18 +4554,18 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3Xi-GS-BzJ"/>
-        <segue reference="0IB-Ck-bUj"/>
-        <segue reference="EiV-My-mMz"/>
+        <segue reference="eph-X6-6UF"/>
         <segue reference="BIm-XO-WxK"/>
+        <segue reference="4hB-mz-Xfn"/>
+        <segue reference="L7a-2i-PZk"/>
+        <segue reference="Vdy-gq-ipH"/>
+        <segue reference="sYV-FO-m64"/>
+        <segue reference="u3n-sT-PPU"/>
         <segue reference="9wv-3l-4LX"/>
         <segue reference="b7d-an-12b"/>
         <segue reference="oxs-N4-4FF"/>
         <segue reference="Drd-XR-2Bn"/>
-        <segue reference="w4T-bo-8Y1"/>
         <segue reference="JUy-us-Qrb"/>
         <segue reference="7DD-y8-pwi"/>
-        <segue reference="TAQ-WE-vyL"/>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="5kU-X6-pBw"/>
     </inferredMetricsTieBreakers>
 </document>
