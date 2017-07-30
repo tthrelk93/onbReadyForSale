@@ -122,7 +122,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             if let vc = segue.destination as? profileRedesignViewController{
                 vc.sender = "band"
                 vc.senderID = self.sessionID!
-                
+                print("")
                 if self.backToSM == true {
                     vc.artistID = self.cellTouchedArtistUID
                     vc.userID = (Auth.auth().currentUser?.uid)!
