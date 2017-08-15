@@ -10,6 +10,8 @@ import UIKit
 import FirebaseCore
 import FirebaseAuth
 import UserNotifications
+import FBSDKCoreKit
+
 //import Firebase
 
 import IQKeyboardManagerSwift
@@ -42,6 +44,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("notLoggedIn")
             }
         }
+        //F
+        FBSDKApplicationDelegate.sharedInstance().application(<#T##application: UIApplication!##UIApplication!#>, didFinishLaunchingWithOptions: launchOptions)
+        //[[FBSDKApplicationDelegate sharedInstance] application:application
+           // didFinishLaunchingWithOptions:launchOptions]
+        // Add any custom logic here.
+        
 
         
         // iOS 10 support
@@ -66,6 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, open: url as URL!, sourceApplication: sourceApplication, annotation: annotation)
+    }
     
     
     func applicationWillResignActive(_ application: UIApplication) {

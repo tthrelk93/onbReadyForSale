@@ -15,6 +15,8 @@ import UIKit
 import QuartzCore
 import CoreLocation
 import SwiftOverlays
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class CreateAccountViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,CLLocationManagerDelegate{
     @IBOutlet weak var smallerONBLogo: UIImageView!
@@ -582,6 +584,16 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     let locationManager = CLLocationManager()
     override func viewDidLoad() {
                 super.viewDidLoad()
+        
+        //
+        let facebookLoginButton = FBSDKLoginButton()
+        facebookLoginButton.center = self.view.center
+        
+        self.view.addSubview(facebookLoginButton)
+        facebookLoginButton.readPermissions = ["public_profile", "email", "user_friends"]
+        
+        
+        
         picker.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         //rotateView(targetView: CreateAccountBackground)
@@ -620,40 +632,42 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
-        
-        
-        view.addSubview(profileImageView)
-        view.addSubview(profileImageViewButton)
-        view.addSubview(inputsContainerView)
-        view.addSubview(loginRegisterSegmentedControl)
-        view.addSubview(loginRegisterButton)
-        view.addSubview(createAccountLabel)
-        view.addSubview(createAccountLabelForLoginSegment)
-        inputsContainerView.isHidden = true
-        loginRegisterSegmentedControl.isHidden = true
-        loginRegisterButton.isHidden = true
-        createAccountLabel.isHidden = true
-        createAccountLabelForLoginSegment.isHidden = true
+        if (FBSDKAccessToken.current() != nil) {
+            // User is logged in, do work such as go to next view controller.
+        } else {
+            view.addSubview(profileImageView)
+            view.addSubview(profileImageViewButton)
+            view.addSubview(inputsContainerView)
+            view.addSubview(loginRegisterSegmentedControl)
+            view.addSubview(loginRegisterButton)
+            view.addSubview(createAccountLabel)
+            view.addSubview(createAccountLabelForLoginSegment)
+            inputsContainerView.isHidden = true
+            loginRegisterSegmentedControl.isHidden = true
+            loginRegisterButton.isHidden = true
+            createAccountLabel.isHidden = true
+            createAccountLabelForLoginSegment.isHidden = true
+           
+            profileImageViewButton.isHidden = true
+            
+            setupProfileImageViewButton()
+            setupProfileImageView()
+            setupCreateAccountLabel()
+            setupInputsContainerView()
+            setupLoginRegisterSegmentedControl()
+            setupLoginRegisterButton()
+            setupCreateAccountLabelForLoginSegment()
+            createAccountLabelForLoginSegment.isHidden = true
+            profileImageView.isHidden = true
+            //setupProfileImageView()
+            
        
-        profileImageViewButton.isHidden = true
-        
-        setupProfileImageViewButton()
-        setupProfileImageView()
-        setupCreateAccountLabel()
-        setupInputsContainerView()
-        setupLoginRegisterSegmentedControl()
-        setupLoginRegisterButton()
-        setupCreateAccountLabelForLoginSegment()
-        createAccountLabelForLoginSegment.isHidden = true
-        profileImageView.isHidden = true
-        //setupProfileImageView()
-        
-   
-        //background image blur effect
-        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.dark)) as UIVisualEffectView
-        //visualEffectView.frame = CreateAccountBackground.bounds
-        visualEffectView.alpha = 0.5
-        //CreateAccountBackground.addSubview(visualEffectView)
+            //background image blur effect
+            let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.dark)) as UIVisualEffectView
+            //visualEffectView.frame = CreateAccountBackground.bounds
+            visualEffectView.alpha = 0.5
+            //CreateAccountBackground.addSubview(visualEffectView)
+        }
         
         
     }

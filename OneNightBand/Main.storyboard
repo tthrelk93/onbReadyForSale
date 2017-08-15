@@ -3834,7 +3834,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Jj4-34-fk8"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="81B-vh-Eci">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ot2-cj-V61">
@@ -4515,8 +4515,6 @@
         <image name="tick-blue" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="Vdy-gq-ipH"/>
         <segue reference="BfE-VC-iYV"/>
         <segue reference="L7a-2i-PZk"/>
         <segue reference="kHE-LE-wwu"/>
@@ -4524,10 +4522,12 @@
         <segue reference="sYV-FO-m64"/>
         <segue reference="oxs-N4-4FF"/>
         <segue reference="f0l-Pw-dB9"/>
-        <segue reference="4hB-mz-Xfn"/>
         <segue reference="eph-X6-6UF"/>
+        <segue reference="4hB-mz-Xfn"/>
         <segue reference="3Xi-GS-BzJ"/>
         <segue reference="aDa-Hr-4MX"/>
+        <segue reference="UZe-b8-Fnt"/>
+        <segue reference="u3n-sT-PPU"/>
         <segue reference="pvU-Tj-C52"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -43,6 +43,8 @@
 		3B6248DE1DD4F5CB00847676 /* UploadSessionPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6248DD1DD4F5CB00847676 /* UploadSessionPopup.swift */; };
 		3B68DD661ED37129001EAFEF /* profileRedesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B68DD651ED37129001EAFEF /* profileRedesignViewController.swift */; };
 		3B69E7111DA3042C00D97BE2 /* MainNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B69E7101DA3042C00D97BE2 /* MainNavigationViewController.swift */; };
+		3B711EF81F43AD1B00918CC2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B711EF61F43AD1B00918CC2 /* FBSDKCoreKit.framework */; };
+		3B711EF91F43AD1B00918CC2 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B711EF71F43AD1B00918CC2 /* FBSDKLoginKit.framework */; };
 		3B72BCD61DF5E25A0084D4B5 /* VideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72BCD41DF5E25A0084D4B5 /* VideoCollectionViewCell.swift */; };
 		3B72BCD71DF5E25A0084D4B5 /* VideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B72BCD51DF5E25A0084D4B5 /* VideoCollectionViewCell.xib */; };
 		3B72F5371E8C29E8006013EC /* ONB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72F5361E8C29E8006013EC /* ONB.swift */; };
@@ -92,9 +94,6 @@
 		3BFD58FD1DF0DC3300C85225 /* AddMediaToProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFD58FC1DF0DC3300C85225 /* AddMediaToProfile.swift */; };
 		3BFE84E21DB1674300E105F2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFE84E11DB1674300E105F2 /* Session.swift */; };
 		3BFF119B1DC0389A000E574D /* Invite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFF119A1DC0389A000E574D /* Invite.swift */; };
-		487FFF67B8FBBEF292FA192C /* Pods_OneNightBand_OneNightBandUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D5C1ACD7BB165A8384DE3A /* Pods_OneNightBand_OneNightBandUITests.framework */; };
-		60D16F3949BF281034C0DB99 /* Pods_OneNightBand_OneNightBandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C225FC21FDC307FC42877A5D /* Pods_OneNightBand_OneNightBandTests.framework */; };
-		D5F2F6F63F324A241261B9FE /* Pods_OneNightBand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C27613FAF7FE9D7C5CD080 /* Pods_OneNightBand.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +152,8 @@
 		3B6248DD1DD4F5CB00847676 /* UploadSessionPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadSessionPopup.swift; sourceTree = "<group>"; };
 		3B68DD651ED37129001EAFEF /* profileRedesignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profileRedesignViewController.swift; sourceTree = "<group>"; };
 		3B69E7101DA3042C00D97BE2 /* MainNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationViewController.swift; sourceTree = "<group>"; };
+		3B711EF61F43AD1B00918CC2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		3B711EF71F43AD1B00918CC2 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		3B72BCD41DF5E25A0084D4B5 /* VideoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B72BCD51DF5E25A0084D4B5 /* VideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B72F5361E8C29E8006013EC /* ONB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ONB.swift; sourceTree = "<group>"; };
@@ -213,10 +214,7 @@
 		7AC38F794BDE20D37090208E /* Pods-OneNightBand-OneNightBandUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneNightBand-OneNightBandUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneNightBand-OneNightBandUITests/Pods-OneNightBand-OneNightBandUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A02D3730ED042651B625C17F /* Pods-OneNightBand-OneNightBandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneNightBand-OneNightBandTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneNightBand-OneNightBandTests/Pods-OneNightBand-OneNightBandTests.release.xcconfig"; sourceTree = "<group>"; };
 		BC62868224F34B29F36A9491 /* Pods-OneNightBand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneNightBand.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneNightBand/Pods-OneNightBand.debug.xcconfig"; sourceTree = "<group>"; };
-		C225FC21FDC307FC42877A5D /* Pods_OneNightBand_OneNightBandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneNightBand_OneNightBandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C3D5C1ACD7BB165A8384DE3A /* Pods_OneNightBand_OneNightBandUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneNightBand_OneNightBandUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C53CA4F47DD0E64A0795172D /* Pods-OneNightBand-OneNightBandUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneNightBand-OneNightBandUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneNightBand-OneNightBandUITests/Pods-OneNightBand-OneNightBandUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F5C27613FAF7FE9D7C5CD080 /* Pods_OneNightBand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneNightBand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,8 +223,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BEFDB781E7F36180076E2BC /* AVFoundation.framework in Frameworks */,
+				3B711EF81F43AD1B00918CC2 /* FBSDKCoreKit.framework in Frameworks */,
+				3B711EF91F43AD1B00918CC2 /* FBSDKLoginKit.framework in Frameworks */,
 				3B87964D1E786820009CA4C8 /* UserNotifications.framework in Frameworks */,
-				D5F2F6F63F324A241261B9FE /* Pods_OneNightBand.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +233,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60D16F3949BF281034C0DB99 /* Pods_OneNightBand_OneNightBandTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +240,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				487FFF67B8FBBEF292FA192C /* Pods_OneNightBand_OneNightBandUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,11 +505,10 @@
 		FB3406CB0C265996987C69F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B711EF61F43AD1B00918CC2 /* FBSDKCoreKit.framework */,
+				3B711EF71F43AD1B00918CC2 /* FBSDKLoginKit.framework */,
 				3BEFDB771E7F36180076E2BC /* AVFoundation.framework */,
 				3B87964C1E786820009CA4C8 /* UserNotifications.framework */,
-				F5C27613FAF7FE9D7C5CD080 /* Pods_OneNightBand.framework */,
-				C225FC21FDC307FC42877A5D /* Pods_OneNightBand_OneNightBandTests.framework */,
-				C3D5C1ACD7BB165A8384DE3A /* Pods_OneNightBand_OneNightBandUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1048,6 +1044,28 @@
 				CODE_SIGN_ENTITLEMENTS = OneNightBand/OneNightBand.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/DropDown\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FlexibleSteppedProgressBar\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/GTMSessionFetcher\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/GoogleToolboxForMac\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/IQKeyboardManagerSwift\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/JSQMessagesViewController\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/JSQSystemSoundPlayer\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Player\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SwiftOverlays\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YNDropDownMenu\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YouTubePlayer\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/nanopb\"",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseAuth/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseCore/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseDatabase/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseInstanceID/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseStorage/Frameworks\"",
+					"\"~/Documents/FacebookSDK\"",
+				);
 				HEADER_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
 				INFOPLIST_FILE = OneNightBand/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1070,6 +1088,28 @@
 				CODE_SIGN_ENTITLEMENTS = OneNightBand/OneNightBand.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/DropDown\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FlexibleSteppedProgressBar\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/GTMSessionFetcher\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/GoogleToolboxForMac\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/IQKeyboardManagerSwift\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/JSQMessagesViewController\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/JSQSystemSoundPlayer\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Player\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SwiftOverlays\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YNDropDownMenu\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YouTubePlayer\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/nanopb\"",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseAuth/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseCore/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseDatabase/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseInstanceID/Frameworks\"",
+					"\"${PODS_ROOT}/FirebaseStorage/Frameworks\"",
+					"\"~/Documents/FacebookSDK\"",
+				);
 				HEADER_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS)";
 				INFOPLIST_FILE = OneNightBand/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
