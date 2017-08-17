@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         //F
-        FBSDKApplicationDelegate.sharedInstance().application(<#T##application: UIApplication!##UIApplication!#>, didFinishLaunchingWithOptions: launchOptions)
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         //[[FBSDKApplicationDelegate sharedInstance] application:application
            // didFinishLaunchingWithOptions:launchOptions]
         // Add any custom logic here.

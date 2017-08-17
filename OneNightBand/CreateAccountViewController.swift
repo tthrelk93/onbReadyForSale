@@ -571,6 +571,9 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         dismiss(animated: true, completion: nil)
         
     }
+    func fbLoginPressed(){
+        
+    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("canceled picker")
@@ -587,14 +590,96 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
         //
         let facebookLoginButton = FBSDKLoginButton()
+        //facebookLoginButton.delegate = self
         facebookLoginButton.center = self.view.center
         
         self.view.addSubview(facebookLoginButton)
-        facebookLoginButton.readPermissions = ["public_profile", "email", "user_friends"]
+        //facebookLoginButton.readPermissions = ["public_profile", "email", "user_friends"]
+        let login = FBSDKLoginManager()
+        login.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self, handler: (FBSDKLoginManagerLoginResult *result, NSError *error) {
+            if (error) {
+                NSLog("Process error");
+            } else if (result.isCancelled) {
+                NSLog("Cancelled");
+            } else {
+                
+                let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                
+                if user does not already have an account than do instrument selection and then the following code
+                Auth.auth().signIn(with: credential) { (user, error) in
+                    if let error = error {
+                        // ...
+                        return
+                    }
+                    // User is signed in
+                    // ...
+                }
+                else just do the above Auth code
+            
+                
+                
+                
+                let imageName = NSUUID().uuidString
+                let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+                
+                if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+                    
+                    //storageRef.putData(uploadData)
+                    
+                    
+                    storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                        
+                        if error != nil {
+                            print(error as Any)
+                            return
+                        }
+                        
+                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                            
+                            var values = Dictionary<String, Any>()
+                            values["artistsBands"] = [String]()
+                            values["artistsONBs"] = [String]()
+                            
+                            values["name"] = name
+                            values["email"] = email
+                            values["instruments"] = ""
+                            values["password"] = password
+                            values["invites"] = [String:Any]()
+                            
+                            values["artistUID"] = Auth.auth().currentUser?.uid
+                            values["bio"] = ""
+                            values["profileImageUrl"] = [profileImageUrl]
+                            
+                            values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                            values["media"] = [String:Any]()
+                            values["wantedAdResponses"] = [String]()
+                            values["wantedAds"] = [String]()
+                            values["acceptedAudits"] = [String:Any]()
+                            
+                            self.account = values
+                            
+                            self.performSegue(withIdentifier: "AboutONBSegue", sender: self)
+                            //self.registerUserIntoDatabaseWithUID(uid, values: values as [String : Any])
+                            
+                            
+                        }
+                    })
+                }
+                
+                
+        
+            
+        })
+    
+        //facebookLoginButton.delegate.result
+        //facebookLoginButton.delegate.loginButton(facebookLoginButton, didCompleteWith: FBSDKLoginManagerLoginResult, error: nil)
         
         
         
-        picker.delegate = self
+        
+        
+        
+        //picker.delegate = self
         self.locationManager.requestAlwaysAuthorization()
         //rotateView(targetView: CreateAccountBackground)
         //var timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: Selector(("updateCounter")), userInfo: nil, repeats: true)
@@ -635,13 +720,13 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         if (FBSDKAccessToken.current() != nil) {
             // User is logged in, do work such as go to next view controller.
         } else {
-            view.addSubview(profileImageView)
-            view.addSubview(profileImageViewButton)
-            view.addSubview(inputsContainerView)
-            view.addSubview(loginRegisterSegmentedControl)
-            view.addSubview(loginRegisterButton)
-            view.addSubview(createAccountLabel)
-            view.addSubview(createAccountLabelForLoginSegment)
+           // view.addSubview(profileImageView)
+          //  view.addSubview(profileImageViewButton)
+            //view.addSubview(inputsContainerView)
+            //view.addSubview(loginRegisterSegmentedControl)
+           // view.addSubview(loginRegisterButton)
+           // view.addSubview(createAccountLabel)
+           // view.addSubview(createAccountLabelForLoginSegment)
             inputsContainerView.isHidden = true
             loginRegisterSegmentedControl.isHidden = true
             loginRegisterButton.isHidden = true
@@ -650,13 +735,13 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
            
             profileImageViewButton.isHidden = true
             
-            setupProfileImageViewButton()
-            setupProfileImageView()
-            setupCreateAccountLabel()
-            setupInputsContainerView()
-            setupLoginRegisterSegmentedControl()
-            setupLoginRegisterButton()
-            setupCreateAccountLabelForLoginSegment()
+            //setupProfileImageViewButton()
+           // setupProfileImageView()
+           // setupCreateAccountLabel()
+           // setupInputsContainerView()
+           // setupLoginRegisterSegmentedControl()
+          //  setupLoginRegisterButton()
+          //  setupCreateAccountLabelForLoginSegment()
             createAccountLabelForLoginSegment.isHidden = true
             profileImageView.isHidden = true
             //setupProfileImageView()
