@@ -111,6 +111,102 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
        
     }()
+    var continueWithEPRect: CGRect?
+    
+    
+    @IBAction func facebookRectPressed(_ sender: Any) {
+        FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self) { (result, err) in
+            if err != nil {
+                print("Custom FB Login failed:", err)
+                return
+            }
+            
+            //let user = Auth.auth().currentUser
+            
+            let accessToken = FBSDKAccessToken.current()
+            guard let accessTokenString = accessToken?.tokenString else { return }
+            
+            let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+            Auth.auth().signIn(with: credentials, completion: { (user, error) in
+                if let error = error {
+                    print("erororororor")
+                    print(error)
+                    
+                    return
+                }
+                self.user1 = user!
+                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                
+                Database.database().reference().child("users").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        var userInDatabase = false
+                        for snap in snapshots{
+                            let snapDict = snap.value as! [String:Any]
+                            if (snapDict["email"] as! String) == user?.email{
+                                userInDatabase = true
+                                self.fbLoginVerified(user: self.user1!)
+                            }
+                        }
+                        if userInDatabase == false{
+                            self.fbCreateAccountVerified(user: self.user1!)
+                        }
+                    }
+                })
+            })
+        }
+
+    }
+   
+    @IBAction func continueWithEPPressed(_ sender: Any) {
+        if continueWithEP.titleLabel?.text == "Continue with Email and Password"{
+            
+            orLabel.isHidden = true
+            
+        facebookRect.isHidden = true
+        continueWithEP.frame = facebookRect.frame
+        continueWithEP.frame.origin = facebookRect.frame.origin
+        continueWithEP.setTitle("Back", for: .normal)
+            forgotEmailOrPasswordButton.isHidden = false
+            inputsContainerView.isHidden = false
+            loginRegisterSegmentedControl.isHidden = false
+            loginRegisterButton.isHidden = false
+           // createAccountLabel.isHidden = false
+           // createAccountLabelForLoginSegment.isHidden = false
+            if loginRegisterSegmentedControl.selectedSegmentIndex == 1{
+                smallerONBLogo.isHidden = true
+                profileImageViewButton.isHidden = false
+                profileImageView.isHidden = false
+            } else {
+                smallerONBLogo.isHidden = false
+                profileImageViewButton.isHidden = true
+                profileImageView.isHidden = true
+            }
+            
+        } else {
+            orLabel.isHidden = false
+            facebookRect.isHidden = false
+            continueWithEP.frame = continueWithEPRect!
+            continueWithEP.frame.origin = continueWithEPRect!.origin
+            continueWithEP.setTitle("Continue with Email and Password", for: .normal)
+            smallerONBLogo.isHidden = false
+            inputsContainerView.isHidden = true
+            loginRegisterSegmentedControl.isHidden = true
+            loginRegisterButton.isHidden = true
+            createAccountLabel.isHidden = true
+            createAccountLabelForLoginSegment.isHidden = true
+            forgotEmailOrPasswordButton.isHidden = true
+            profileImageViewButton.isHidden = true
+            profileImageView.isHidden = true
+
+        }
+    
+        
+        
+        
+    }
+    @IBOutlet weak var orLabel: UILabel!
+    @IBOutlet weak var continueWithEP: UIButton!
         func setupCreateAccountLabel(){
         createAccountLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         createAccountLabel.bottomAnchor.constraint(equalTo: profileImageViewButton.topAnchor, constant: -200).isActive = true
@@ -347,9 +443,13 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     
     
     let forgotEmailOrPasswordButton: UIButton = {
-        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+        let ONBPink = UIColor(red: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+        
+        //let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
         let button = UIButton()
-        button.alpha = 0.8
+        button.alpha = 0.9
+        
+        button.isHidden = true
         button.setTitleColor(ONBPink, for: .normal)
         button.backgroundColor = UIColor.clear
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightLight)
@@ -360,10 +460,12 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
     }()
     func setupForgotEmailOrPassword(){
+        
+        forgotEmailOrPasswordButton.isHidden = true
         forgotEmailOrPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         forgotEmailOrPasswordButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 5).isActive = true
     }
-    let facebookLoginButton: UIButton = {
+   /* let facebookLoginButton: UIButton = {
         let customFBButton = UIButton(type: .system)
         customFBButton.backgroundColor = UIColor(colorLiteralRed: 59/255, green: 89/255, blue: 152/255, alpha: 1.0)
         //customFBButton.frame = CGRect(x: 16, y: 116, width: view.frame.width - 32, height: 50)
@@ -378,7 +480,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
 
     
         return customFBButton
-    }()
+    }()*/
     var user1: User?
     func handleCustomFBLogin() {
         FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self) { (result, err) in
@@ -446,6 +548,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             self.user = (user.uid)
             self.account = values
             self.loginWithFacebook = true
+        
             self.performSegue(withIdentifier: "AboutONBSegue", sender: self)
         
     }
@@ -460,16 +563,22 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
        
     }
     
+    @IBOutlet weak var facebookRect: UIButton!
     func setupFacebookLoginButton(){
+        facebookRect.layer.cornerRadius = 10
+        
+       //facebookLoginButton.frame = continueWithEP.frame
+        /*facebookLoginButton.frame.origin = continueWithEP.frame.origin
         //facebookLoginButton.delegate = self
-        facebookLoginButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 32).isActive = true
-        facebookLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        //facebookLoginButton.widthAnchor.constraint(equalToConstant: self.view.frame.width - 32).isActive = true
+        //facebookLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         facebookLoginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        facebookLoginButton.topAnchor.constraint(equalTo: loginRegisterButton.bottomAnchor, constant: 12).isActive = true
+        facebookLoginButton.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 12).isActive = true*/
         
     }
     
     func facebookLoginPressed(){
+        
         print("helllooooooooo")
         let facebookLoginManager = FBSDKLoginManager()
         facebookLoginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self, handler: {(result, error) in
@@ -478,28 +587,37 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             if error != nil {
                 print("Facebook login failed with error: \(error)")
             } else {
-                let accessToken = FBSDKAccessToken.current().tokenString
-                print("Successfully logged into Facebook with accessToken: \(accessToken)")
-                
-                // Authenticate the facebook user to access the firebase app data
-                Auth.auth().signIn(withCustomToken: accessToken!, completion: { (authData, error) in
+               // var token = FBSDKAccessToken.current()
+                let currentUser = Auth.auth().currentUser
+                currentUser?.getIDTokenForcingRefresh(true, completion: {(idToken, error) in
                     
-                    // if therer is no error logging into Firebase, save the Authetication Data to NSUserDefaults with the key 'uid'
-                    if error != nil {
-                        print("Login failed with error: \(error)")
-                    } else {
-                        print("Successful login with AuthData: \(authData)")
-                        self.user = (Auth.auth().currentUser?.uid)!
-                       // UserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
-                        UserDefaults.standard.setValue(authData?.uid, forKey: "uid")
-                        
-                        // Segue to the next view
-                        self.performSegue(withIdentifier: "LoginSegue", sender: self)
-                        
+                 // getTokenForcingRefresh(true) {idToken, error in
+                    if let error = error {
+                        // Handle error
+                        return;
                     }
+                    print("Successfully logged into Facebook with accessToken: \(idToken)")
+                    
+                    // Authenticate the facebook user to access the firebase app data
+                    Auth.auth().signIn(withCustomToken: (idToken)!, completion: { (authData, error) in
+                        
+                        // if therer is no error logging into Firebase, save the Authetication Data to NSUserDefaults with the key 'uid'
+                        if error != nil {
+                            print("Login failed with error: \(error)")
+                        } else {
+                            print("Successful login with AuthData: \(authData)")
+                            self.user = (Auth.auth().currentUser?.uid)!
+                            // UserDefaults.standardUserDefaults().setValue(authData.uid, forKey: KEY_UID)
+                            UserDefaults.standard.setValue(authData?.uid, forKey: "uid")
+                            
+                            // Segue to the next view
+                            self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                            
+                        }
+                    })
                 })
             }
-            
+        
         })
 
     }
@@ -507,7 +625,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         let button = UIButton(type: .system)
         
         button.backgroundColor = self.ONBPink
-        button.alpha = 0.8
+        button.alpha = 0.9
         button.setTitle("Register", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
@@ -518,9 +636,10 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         return button
     }()
     func setupLoginRegisterButton(){
+        loginRegisterButton.layer.cornerRadius = 10
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: forgotEmailOrPasswordButton.bottomAnchor, constant:20).isActive = true
-        loginRegisterButton.widthAnchor.constraint(equalTo: facebookLoginButton.widthAnchor).isActive = true
+        loginRegisterButton.widthAnchor.constraint(equalTo: loginRegisterSegmentedControl.widthAnchor, multiplier: 1/3 ).isActive = true
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -535,7 +654,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     func setupLoginRegisterSegmentedControl(){
         //need x, y, width, height constraints
         loginRegisterSegmentedControl.tintColor = self.ONBPink
-        loginRegisterSegmentedControl.alpha = 0.8
+        loginRegisterSegmentedControl.alpha = 0.9
         loginRegisterSegmentedControl.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.normal)
         loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterSegmentedControl.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
@@ -562,7 +681,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         if(loginRegisterSegmentedControl.selectedSegmentIndex == 1){
             //self.smallerONBLogo.isHidden = true
             picker.delegate = self
-            facebookLoginButton.setTitle("Register with Facebook", for: .normal)
+            //facebookLoginButton.setTitle("Continue with Facebook", for: .normal)
             createAccountLabel.isHidden = false
             createAccountLabelForLoginSegment.isHidden = true
             nameTextField.placeholder = "Name"
@@ -573,7 +692,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             
         }
         else{
-            facebookLoginButton.setTitle("Login with Facebook", for: .normal)
+           // facebookLoginButton.setTitle("Continue with Facebook", for: .normal)
             //self.smallerONBLogo.isHidden = false
             createAccountLabel.isHidden = true
             //setupCreateAccountLabelForLoginSegment()
@@ -646,7 +765,9 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         //SwiftOverlays.removeAllBlockingOverlays()
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        forgotEmailOrPasswordButton.isHidden = true
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("hrllo")
@@ -948,41 +1069,49 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     
     @IBOutlet weak var ONBLabel: UILabel!
     let locationManager = CLLocationManager()
+    var orRect: CGRect?
     override func viewDidLoad() {
                 super.viewDidLoad()
+        forgotEmailOrPasswordButton.isHidden = true
+        self.continueWithEPRect = continueWithEP.frame
+        continueWithEP.layer.cornerRadius = 10
+        
         //let loginManager = FBSDKLoginManager()
        // loginManager.logOut()
         //backButton.isHidden = true
+        self.orRect = orLabel.frame
         smallerONBLogo.isHidden = true
         view.addSubview(profileImageView)
         view.addSubview(profileImageViewButton)
-        
+        view.addSubview(forgotEmailOrPasswordButton)
         view.addSubview(loginRegisterSegmentedControl)
-        view.addSubview(facebookLoginButton)
+        //view.addSubview(facebookLoginButton)
         view.addSubview(loginRegisterButton)
         view.addSubview(createAccountLabel)
         view.addSubview(createAccountLabelForLoginSegment)
-        view.addSubview(forgotEmailOrPasswordButton)
+        
         
         view.addSubview(inputsContainerView)
         
-        facebookLoginButton.isHidden = false
-        inputsContainerView.isHidden = false
-        loginRegisterSegmentedControl.isHidden = false
-        loginRegisterButton.isHidden = false
+        facebookRect.isHidden = false
+        inputsContainerView.isHidden = true
+        loginRegisterSegmentedControl.isHidden = true
+        loginRegisterButton.isHidden = true
         createAccountLabel.isHidden = true
         createAccountLabelForLoginSegment.isHidden = true
         
-        profileImageViewButton.isHidden = false
+        profileImageViewButton.isHidden = true
+        profileImageView.isHidden = true
         
         setupProfileImageViewButton()
         setupProfileImageView()
+         setupForgotEmailOrPassword()
         setupCreateAccountLabel()
         
         setupLoginRegisterSegmentedControl()
         setupLoginRegisterButton()
         setupCreateAccountLabelForLoginSegment()
-        setupForgotEmailOrPassword()
+       
         setupFacebookLoginButton()
         setupInputsContainerView()
         createAccountLabelForLoginSegment.isHidden = true

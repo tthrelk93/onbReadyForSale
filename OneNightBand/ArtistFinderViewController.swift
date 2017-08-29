@@ -51,12 +51,33 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var addBandView: UIView!
     
     @IBAction func newONBButtonPressed(_ sender: Any) {
+        let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateOneNightBandViewController") as! CreateOneNightBandViewController
+        self.addChildViewController(popOverVC)
+        popOverVC.searchType = "af"
+        popOverVC.parentView2 = self
+        popOverVC.artistUID = self.artistUID
+        //popOverVC.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width - 50, height: self.view.frame.height - 50)
+        self.view.addSubview(popOverVC.view)
+        popOverVC.didMove(toParentViewController: self)
+
+        
+        
     }
     @IBOutlet weak var newONBButton: UIButton!
     @IBOutlet weak var bandCollect: UICollectionView!
     @IBOutlet weak var newBandButton: UIButton!
     @IBAction func newBandButtonPressed(_ sender: Any) {
+        let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateBandViewController") as! CreateBandViewController
+        self.addChildViewController(popOverVC)
+        popOverVC.searchType = "af"
+        popOverVC.view.frame = self.view.frame
+        popOverVC.parentView2 = self
+        popOverVC.artistUID = self.artistUID
+        self.view.addSubview(popOverVC.view)
+        popOverVC.didMove(toParentViewController: self)
     }
+    
+    
     
     @IBAction func postToBoardButtonPressed(_ sender: Any) {
         self.destination = "wanted"
@@ -605,6 +626,11 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     
    override func viewDidLoad() {
         super.viewDidLoad()
+    if createInviteSuccess == true{
+        let alert = UIAlertController(title: "Success!", message: "Invite sent.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     newBandButton.layer.borderColor = ONBPink.cgColor
     newBandButton.layer.borderWidth = 2
     newBandButton.layer.cornerRadius = newBandButton.frame.width/2
@@ -846,8 +872,94 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
             return bandIDArray.count
         }
     }
+    var selectedONB = ONB()
+    var selectedBand = Band()
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == onbCollect {
+            self.selectedONB = onbArray[indexPath.row]
+            self.bandType = "ONB"
+            
+            
+            
+            ref.child("users").child(self.artistUID).child("invites").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    let recipient = self.ref.child("users").child(self.artistUID).child("invites")
+                    let currentUser = Auth.auth().currentUser?.uid
+                    let tempID = recipient.childByAutoId()
+                    var values = [String: Any]()
+                    values["sender"] = currentUser!
+                    values["bandID"] = self.onbArray[indexPath.row].onbID
+                    values["instrumentNeeded"] = self.instrumentPicked
+                    
+                    values["date"] = self.onbArray[indexPath.row].onbDate
+                    values["artistCount"] = self.onbArray[indexPath.row].onbArtists.count
+                    values["bandType"] = "ONB"
+                    values["bandName"] = self.onbArray[indexPath.row].onbName
+                    values["inviteResponse"] = String()
+                    
+                    
+                    tempID.updateChildValues(values, withCompletionBlock: {(err, ref) in
+                     if err != nil {
+                     print(err as Any)
+                     return
+                     }
+                        let alert = UIAlertController(title: "Success!", message: "Invite sent.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+
+                    
+                    
+                     })
+                }
+            })
+            
+
+        }
+        
+        if collectionView == self.bandCollect{
+            self.selectedBand = self.bandArray[indexPath.row]
+            self.bandType = "Band"
+            ref.child("users").child(self.artistUID).child("invites").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    let recipient = self.ref.child("users").child(self.artistUID).child("invites")
+                    let currentUser = Auth.auth().currentUser?.uid
+                    let tempID = recipient.childByAutoId()
+                    var values = [String: Any]()
+                    values["sender"] = currentUser!
+                    values["bandID"] = self.bandArray[indexPath.row].bandID
+                    values["instrumentNeeded"] = self.instrumentPicked
+                    
+                    values["date"] = ""
+                    values["artistCount"] = self.bandArray[indexPath.row].bandMembers.count
+                    values["bandType"] = "Band"
+                    values["bandName"] = self.bandArray[indexPath.row].bandName
+                    values["inviteResponse"] = String()
+                    
+                    
+                    tempID.updateChildValues(values, withCompletionBlock: {(err, ref) in
+                        if err != nil {
+                            print(err as Any)
+                            return
+                        }
+                        
+                        
+                    })
+                }
+            })
+            
+
+        }
+        self.addBandView.isHidden = true
+        //bandSelectorView.isHidden = true
+        //step2Label.isHidden = false
+        
+    }
+
     
+    var createInviteSuccess: Bool?
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{

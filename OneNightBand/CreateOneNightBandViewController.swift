@@ -99,6 +99,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         //values["artistCount"] = self.artistCount
                         //values["bandType"] = self.bandType
                         self.inviteDict["bandName"] = self.bandNameTextField.text
+                        self.inviteDict["sender"] = Auth.auth().currentUser?.uid
                         //values["inviteResponse"] = String()
                         tempID.updateChildValues(self.inviteDict, withCompletionBlock: {(err, ref) in
                             if err != nil {
@@ -232,7 +233,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
         
         present(picker, animated: true, completion: nil)
     }
-    
+    var parentView2 = ArtistFinderViewController()
     
     lazy var sessionImageView: UIImageView = {
         let imageView = UIImageView()
@@ -250,9 +251,11 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
     func setupSessionImageView() {
         //need x, y, width, height constraints
         sessionImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        sessionImageView.topAnchor.constraint(equalTo: popupView.topAnchor).isActive = true
+        //sessionImageView.topAnchor.constraint(equalTo: popupView.topAnchor).isActive = true
+        sessionImageView.bottomAnchor.constraint(equalTo: bandNameTextField.topAnchor, constant: 20).isActive = true
         sessionImageView.widthAnchor.constraint(equalTo: sessionImageViewButton.widthAnchor).isActive = true
         sessionImageView.heightAnchor.constraint(equalTo: sessionImageViewButton.heightAnchor).isActive = true
+        
         
         //sessionImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
@@ -260,17 +263,23 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
     
 
 
+   // @IBOutlet weak var popupView: UIView!
     
+    @IBOutlet weak var cancelButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.isNavigationBarHidden = true
         self.navigationItem.hidesBackButton = true
+        createONBButton.layer.cornerRadius = 10
 
-        
+        popupView.layer.cornerRadius = 10
+        cancelButton.layer.cornerRadius = 10
         datePicker.datePickerMode = UIDatePickerMode.date
-        datePicker.backgroundColor = UIColor.white.withAlphaComponent(0.6)
+        datePicker.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        datePicker.setValue(UIColor.white, forKeyPath: "textColor")
+        datePicker.layer.cornerRadius = 10
         view.addSubview(sessionImageView)
         view.addSubview(sessionImageViewButton)
         setupSessionImageView()
@@ -400,6 +409,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                 vc.senderScreen = "onb"
                 vc.sender = "joinBand"
                 vc.thisONBObject = self.onbObject
+                vc.createInviteSuccess = true
                 
                 
             }

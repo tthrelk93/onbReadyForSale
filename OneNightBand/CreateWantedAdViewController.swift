@@ -26,13 +26,13 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     @IBAction func onbInfoPressed(_ sender: Any) {
         moreInfoView.isHidden = false
         bandOrONBLabel.text = "OneNightBand"
-        explanatoryView.text = "Select Create OneNightBand if you wish to create a temporary band or find musicians to play with that you may or may not see again."
+        explanatoryView.text = "Create a OneNightBand if you want a spur of the moment jam session or you are travelling and want to play with local musicians that you may not ever see again."
     }
     @IBOutlet weak var onbInfoButton: UIButton!
     @IBAction func bandInfoPressed(_ sender: Any) {
         moreInfoView.isHidden = false
         bandOrONBLabel.text = "Band"
-        explanatoryView.text = "Select Create Band if you want to create a page for your pre-existing band, or are trying to create a band that regularly practices or plays gigs."
+        explanatoryView.text = "Create a Band if you want to find musicians who are looking to join a lasting band that regularly meets."
     }
     var createdBand = Band()
     var createdONB = ONB()
@@ -42,7 +42,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
         self.addChildViewController(popOverVC)
         popOverVC.searchType = "wanted"
         popOverVC.parentView = self
-        popOverVC.view.frame = self.view.frame
+        //popOverVC.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width - 50, height: self.view.frame.height - 50)
         self.view.addSubview(popOverVC.view)
         popOverVC.didMove(toParentViewController: self)
     }
@@ -64,6 +64,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var createONB: UIButton!
     weak var wantedAdDelegate: WantedAdDelegate?
     
+    @IBOutlet weak var step2Label: UILabel!
     var ref = Database.database().reference()
     var user = Auth.auth().currentUser?.uid
     var bandType = String()
@@ -72,22 +73,24 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     var tempWanted = WantedAd()
     var sendWanted = [String: Any]()
     @IBAction func postAdPressed(_ sender: Any) {
-        if(moreInfoTextView.text != "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "){
+        if(moreInfoTextView1.text != "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "){
             //performSegue(withIdentifier: "CreateWantedToPFM", sender: self)
             //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Your Bands")
-            
+            print("wantedPressed1---BandType = \(self.bandType)")
             let ref = Database.database().reference()
             let wantedReference = ref.child("wantedAds").childByAutoId()
             let wantedReferenceAnyObject = wantedReference.key
             var values = [String:Any]()
             values["bandType"] = self.bandType
             if bandType == "ONB"{
+                print("wantedPressed2: ONB")
                 values["bandID"] = selectedONB?.onbID
                 values["bandName"] = selectedONB?.onbName
                 values["date"] = selectedONB?.onbDate
                 values["moreInfo"] = selectedONB?.onbInfo
                 values["wantedImage"] = selectedONB?.onbPictureURL.first
             } else {
+                print("wantedPressed2: Band")
                 values["bandID"] = selectedBand?.bandID
                 values["bandName"] = selectedBand?.bandName
                 values["date"] = ""
@@ -110,14 +113,16 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
             
             
             if self.bandType != "ONB"{
-                
+                print("wantedPressed3: Band")
                         wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
                             if err != nil {
                                 print(err as Any)
                                 return
                             }
+                            print("wantedPressed4: Band/UpdateChildVals for wanted = success")
                             
                         })
+                print("wantedPressed5: Band/after wanted update child")
                         self.ref.child("bands").child((selectedBand?.bandID)!).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 for snap in snapshots{
@@ -129,7 +134,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                             self.wantedIDArray2.append(wantedReferenceAnyObject)
                             var tempDict = [String:Any]()
                             tempDict["wantedAds"] = self.wantedIDArray2
-                            let bandRef = self.ref.child("bands").child(self.bandID)
+                            let bandRef = self.ref.child("bands").child((self.selectedBand?.bandID)!)
                             bandRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
                                 if err != nil {
                                     print(err as Any)
@@ -140,11 +145,45 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                         
                         performSegue(withIdentifier: "WantedToProfile", sender: self)
                         //}
-                        
-                        
-                        
-
+            } else {
+                print("wantedPressed3: ONB")
+                wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                        print(err as Any)
+                        return
+                    }
+                    print("wantedPressed4: Band/UpdateChildVals for wanted = success")
+                    
+                })
+                print("wantedPressed5: Band/after wanted update child")
+                self.ref.child("oneNightBands").child((selectedONB!.onbID)).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        for snap in snapshots{
+                            
+                            self.wantedIDArray2.append(snap.value as! String)
+                        }
+                    }
+                    
+                    self.wantedIDArray2.append(wantedReferenceAnyObject)
+                    var tempDict = [String:Any]()
+                    tempDict["wantedAds"] = self.wantedIDArray2
+                    let bandRef = self.ref.child("oneNightBands").child((self.selectedONB?.onbID)!)
+                    bandRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
+                        if err != nil {
+                            print(err as Any)
+                            return
+                        }
+                    })
+                })
+                
+                performSegue(withIdentifier: "WantedToProfile", sender: self)
             }
+        }
+        
+            
+            
+
+            
             
             
             /*if self.bandType == "onb"{
@@ -256,9 +295,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
 
            
             
-        } else {
-            
-        }
+       
                        // let user = Auth.auth().curren
     }
     var currentUser = Auth.auth().currentUser?.uid
@@ -266,6 +303,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     var sizingCell5: SessionCell?
   let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     
+    @IBOutlet weak var moreInfoTextView1: UITextView!
     var coordinateText = [String]()
     @IBOutlet weak var moreInfoTextView: UITextView!
     @IBOutlet weak var cityPicker: UIPickerView!
@@ -282,6 +320,8 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
         createBandButton.layer.cornerRadius = createONB.frame.width/2
         createBandButton.layer.borderColor = ONBPink.cgColor
         createBandButton.layer.borderWidth = 2
+        cancelWantedAdButton.layer.cornerRadius = 10
+        moreInfoView.layer.cornerRadius = 10
         
         for (key, value) in cityDict{
             locationText.append(key)
@@ -290,7 +330,8 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
         locationText.sort()
         locationText.insert("Current City", at: 0)
         locationText.insert("All", at: 0)
-        moreInfoTextView.delegate = self
+        moreInfoTextView1.delegate = self
+        moreInfoTextView1.text = "Tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "
         instrumentPicker.delegate = self
         cityPicker.delegate = self
         expPicker.delegate = self
@@ -430,15 +471,15 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        if moreInfoTextView.textColor == UIColor.white {
-            moreInfoTextView.text = nil
-            moreInfoTextView.textColor = ONBPink
+        if moreInfoTextView1.textColor == UIColor.white {
+            moreInfoTextView1.text = nil
+            moreInfoTextView1.textColor = ONBPink
         }
     }
     public func textViewDidEndEditing(_ textView: UITextView) {
-        if moreInfoTextView.text.isEmpty {
-            moreInfoTextView.text = "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "
-            moreInfoTextView.textColor = UIColor.white
+        if moreInfoTextView1.text.isEmpty {
+            moreInfoTextView1.text = "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "
+            moreInfoTextView1.textColor = UIColor.white
         }
     }
     
@@ -458,6 +499,10 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     var onbArray = [ONB]()
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     
+    @IBOutlet weak var cancelWantedAdButton: UIButton!
+    
+    @IBAction func cancelWantedAdPressed(_ sender: Any) {
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell{
        
             let tempCell = collectionView.dequeueReusableCell(withReuseIdentifier: "SessionCell", for: indexPath as IndexPath) as! SessionCell
@@ -512,12 +557,13 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == onbCollect {
             self.selectedONB = onbArray[indexPath.row]
-            self.selectedBandType = "ONB"
+            self.bandType = "ONB"
         } else {
             self.selectedBand = bandArray[indexPath.row]
-            self.selectedBandType = "Band"
+            self.bandType = "Band"
         }
         bandSelectorView.isHidden = true
+        //step2Label.isHidden = false
         
     }
 

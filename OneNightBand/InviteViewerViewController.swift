@@ -86,7 +86,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
     var wantedAdsOnFeed = [String]()
     
     var wantedAds = [WantedAd]()
-
+    var responseArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +94,9 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
             ref.child("users").child(currentUser!).observeSingleEvent(of: .value, with: {(snapshot) in
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         for snap in snapshots{
+                            if snap.key == "wantedAdResponses"{
+                                self.responseArray = snap.value as! [String]
+                            }
                             if snap.key == "invites"{
                                 for inviteSnap in (snap.children.allObjects as! [DataSnapshot]){
                                     if let invites = inviteSnap.value as? [String:Any]{
@@ -162,39 +165,44 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                     
                             var auditReceivedDict = [String:Any]()
                             for snap in snapshots{
-                                let tempWant = WantedAd()
-                                let tempDict = snap.value as! [String:Any]
-                                tempWant.setValuesForKeys(tempDict)
-                                self.wantedAds.append(tempWant)
-                                if self.wantedAdsOnFeed.contains(snap.key){
-                                    
-                                    if let ad = snap.value as? [String:Any]{
-                                        print("ad: \(ad)")
+                               
+                                if self.responseArray.contains(snap.key){
+                                    print("responseArray: \(self.responseArray), key: \(snap.key)")
+                                    let tempWant = WantedAd()
+                                    let tempDict = snap.value as! [String:Any]
+                                    tempWant.setValuesForKeys(tempDict)
+                                    self.wantedAds.append(tempWant)
+                                       // print("ad: \(ad)")
                                         
-                                        auditReceivedDict["bandName"] = ad["bandName"]
-                                        auditReceivedDict["bandID"] = ad["bandID"]
-                                        auditReceivedDict["instrumentAuditFor"] = (ad["instrumentNeeded"] as! String)
-                                        auditReceivedDict["bandPicURL"] = ad["wantedImage"]
-                                        auditReceivedDict["wantedID"] = ad["wantedID"]
-                                        auditReceivedDict["bandType"] = ad["bandType"]
-                                        if let adResponses = ad["responses"] as? [String:Any]{
+                                    if let adResponses = tempDict["responses"] as? [String:Any]{
                                         for (key, value) in adResponses{
+                                            auditReceivedDict["bandName"] = tempDict["bandName"]
+                                            auditReceivedDict["bandID"] = tempDict["bandID"]
+                                            auditReceivedDict["instrumentAuditFor"] = (tempDict["instrumentNeeded"] as! String)
+                                            auditReceivedDict["bandPicURL"] = tempDict["wantedImage"]
+                                            auditReceivedDict["wantedID"] = tempDict["wantedID"]
+                                            auditReceivedDict["bandType"] = tempDict["bandType"]
+
                                             auditReceivedDict["responseID"] = key
                                             auditReceivedDict["userID"] = (value as! [String:Any])["respondingArtist"] as! String
                                             auditReceivedDict["additInfo1"] = (value as! [String:Any])["infoText1"]
                                             auditReceivedDict["additInfo2"] = (value as! [String:Any])["infoText2"]
-                                            
-                                        }
-                                        print(auditReceivedDict)
-                                    var tempAuditReceived = AuditReceived()
-                                    tempAuditReceived.setValuesForKeys(auditReceivedDict)
-                                    self.auditReceivedArray.append(tempAuditReceived)
-                                        }
+                                            print(auditReceivedDict)
+                                            let tempAuditReceived = AuditReceived()
+                                            tempAuditReceived.setValuesForKeys(auditReceivedDict)
+                                            self.auditReceivedArray.append(tempAuditReceived)
                                     }
+                                }
+                                
+                                        
+                                    
+                                            
+                                    
                                     
                                     
                                 }
                     }
+                    //DispatchQueue.main.async{
                     print("auditRecievedDict: \(self.auditReceivedArray)")
                     
                        // DispatchQueue.main.async{
@@ -217,6 +225,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 self.wantedCollect.gestureRecognizers?.first?.cancelsTouchesInView = false
                                 self.wantedCollect.gestureRecognizers?.first?.delaysTouchesBegan = false
                            // }
+                  //  }
                     
                    
                     
@@ -275,18 +284,25 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
             var tempDict2 = [String: Any]()
             var tempDict3 = [String: Any]()
             print("accept Pressed")
-            
+            var tempUserID: String?
             for invite in 0...self.inviteArray.count - 1{
                 if curCell == self.cellArray[invite]{
+                    for audit in self.auditReceivedArray{
+                        if audit.responseID == curCell.responseID{
+                            tempUserID = audit.userID
+                            break
+                        }
+                    }
+
                     if self.inviteArray[indexPathRow].bandType == "onb"{
-                        Database.database().reference().child("users").child(self.currentUser!).child("artistsONBs").observeSingleEvent(of: .value, with: { (snapshot) in
+                        Database.database().reference().child("users").child(tempUserID!).child("artistsONBs").observeSingleEvent(of: .value, with: { (snapshot) in
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                             for snap in snapshots{
                                 self.onbArray.append(snap.value as! String)
                             }
                             self.onbArray.append(self.inviteArray[invite].bandID)
                             tempDict2["artistsONBs"] = self.onbArray
-                            Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict2)
+                            Database.database().reference().child("users").child(tempUserID!).updateChildValues(tempDict2)
                         }
                         Database.database().reference().child("oneNightBands").child(curCell.bandID).child("onbArtists").observeSingleEvent(of: .value, with: { (snapshot) in
                             var dictionary = [String:Any]()
@@ -294,7 +310,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 for snap in snapshots{
                                     dictionary[snap.key] = snap.value
                                 }
-                                dictionary[self.currentUser!] = self.inviteArray[invite].instrumentNeeded
+                                dictionary[tempUserID!] = self.inviteArray[invite].instrumentNeeded
                                 tempDict3["onbArtists"] = dictionary
                                 
                                 Database.database().reference().child("oneNightBands").child(curCell.bandID).updateChildValues(tempDict3)
@@ -330,7 +346,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                             })
                         })
                 } else {
-                        Database.database().reference().child("users").child(self.currentUser!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
+                        Database.database().reference().child("users").child(tempUserID!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 //var index = 0
                                 for snap in snapshots{
@@ -338,7 +354,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 }
                                 self.bandArray.append(self.inviteArray[invite].bandID)
                                 tempDict2["artistsBands"] = self.bandArray
-                                Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict2)
+                                Database.database().reference().child("users").child(tempUserID!).updateChildValues(tempDict2)
                             }
                             Database.database().reference().child("bands").child(curCell.bandID).child("bandMembers").observeSingleEvent(of: .value, with: { (snapshot) in
                                 
@@ -347,7 +363,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                     for snap in snapshots{
                                         dictionary[snap.key] = snap.value
                                     }
-                                    dictionary[self.currentUser!] = self.inviteArray[invite].instrumentNeeded
+                                    dictionary[tempUserID!] = self.inviteArray[invite].instrumentNeeded
                                     tempDict3["bandMembers"] = dictionary
                                     Database.database().reference().child("bands").child(curCell.bandID).updateChildValues(tempDict3)
                                 }
@@ -436,7 +452,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
         print("in acceptPressedWanted")
         for wanted in 0...self.auditReceivedArray.count - 1{
             if curCell == self.cellArray2[wanted]{
-        if curCell.bandType == "onb"{
+        if curCell.bandType == "ONB"{
             ref.child("oneNightBands").child(curCell.bandID).child("onbArtists").observeSingleEvent(of: .value, with: {(snapshot) in
                 var values1 = [String:Any]()
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -646,18 +662,27 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
         self.ref.child("wantedAds").child(curCell.wantedID).child("responses").child(curCell.responseID).removeValue()
         
         var removeKey: String?
+        var removeIndex: String?
         self.ref.child("users").child(self.currentUser!).child("wantedAdResponses").observeSingleEvent(of: .value, with: {(snapshot) in
             //var tempArray = [String]()
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
                 for snap in snapshots{
-                    if snap.value as! String != curCell.wantedID{
-                        removeKey = snap.key
+                    print("snapppp: \(snap.value as! String)")
+                    if snap.value as! String == curCell.wantedID{
+                        removeKey = snap.value as! String?
+                        removeIndex = snap.key
+                        self.ref.child("users").child(self.currentUser!).child("wantedAdResponses").child(removeIndex!).removeValue()
                         break
                     }
                 }
             }
-            self.ref.child("users").child(self.currentUser!).child("wantedAdResponses").child(removeKey!).removeValue()
+            DispatchQueue.main.async {
+                self.auditReceivedArray.remove(at: Int(removeIndex!)!)
+                self.cellArray2.remove(at: Int(removeIndex!)!)
+                self.wantedCollect.deleteItems(at: [IndexPath(row: Int(removeIndex!)!, section: 0)])
+            }
+            
         })
 
         /*for wanted in 0...self.cellArray2.count-1{

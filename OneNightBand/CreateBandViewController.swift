@@ -89,6 +89,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                                 //values["artistCount"] = self.artistCount
                                 //values["bandType"] = self.bandType
                                 self.inviteDict["bandName"] = self.bandNameTextField.text
+                            self.inviteDict["sender"] = Auth.auth().currentUser?.uid
                                 //values["inviteResponse"] = String()
                                 tempID.updateChildValues(self.inviteDict, withCompletionBlock: {(err, ref) in
                                     if err != nil {
@@ -244,6 +245,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
         //sessionImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
+    @IBOutlet weak var cancelButton: UIButton!
     let picker = UIImagePickerController()
     func handleSelectBandImageView(){
         picker.allowsEditing = true
@@ -251,8 +253,10 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
         present(picker, animated: true, completion: nil)
     }
     var parentView = CreateWantedAdViewController()
+    var parentView2 = ArtistFinderViewController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.cancelButton.layer.cornerRadius = 10
         navigationController?.isNavigationBarHidden = true
         self.navigationItem.hidesBackButton = true
         //self.createButton.isEnabled = true
@@ -387,6 +391,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                 vc.senderScreen = "band"
                 vc.sender = "joinBand"
                 vc.thisBandObject = self.thisBand
+                vc.createInviteSuccess = true
                 
             }
         }

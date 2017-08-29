@@ -103,7 +103,7 @@ class SessionInvitesViewController: UIViewController{
                         
                     }
                     if snap.key == "acceptedAudits"{
-                        let tempArray = snap.value as! [String:Any]
+                        let tempArray = snap.value as! [[String:Any]]
                         if tempArray.count > 0{
                             self.auditionsAlertCount.text = String(describing: tempArray.count)
                             self.auditionsAlertCount.isHidden = false
