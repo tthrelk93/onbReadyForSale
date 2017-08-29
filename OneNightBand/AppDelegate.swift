@@ -42,18 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (FBSDKAccessToken.current() != nil) {
             //if you are logged
+            print("logged in")
             self.window?.rootViewController?.performSegue(withIdentifier: "LoginSegue", sender: self)
         } else {
             //if you are not logged
         }
         
         
-        /*let auth = Auth.auth()
-        if FBSDKAccessToken.current() == nil{
-            //not logged in
-        } else {
-            self.window?.rootViewController?.performSegue(withIdentifier: "LoginSegue", sender: self)
-        }*/
+        
         /*Auth.auth().currentUser?.reauthenticate(with: FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString), completion: {error in
             if error != nil {
                 print(error)

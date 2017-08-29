@@ -55,12 +55,12 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     }
 
 
-    let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+    let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 0.9)
 
     //add skip UIbutton to skip past account login and creation
     
     let createAccountLabel: UILabel = {
-        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 0.9)
         switch UIScreen.main.bounds.width{
         case 320:
             var tempLabel = UILabel()
@@ -117,12 +117,15 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     @IBAction func facebookRectPressed(_ sender: Any) {
         FBSDKLoginManager().logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self) { (result, err) in
             if err != nil {
-                print("Custom FB Login failed:", err)
+                print("Custom FB Login failed:", err?.localizedDescription)
                 return
-            }
+            
+            } else if (result?.isCancelled)! {
+                // Handle cancellations
+            } else {
             
             //let user = Auth.auth().currentUser
-            
+            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
             let accessToken = FBSDKAccessToken.current()
             guard let accessTokenString = accessToken?.tokenString else { return }
             
@@ -135,7 +138,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                     return
                 }
                 self.user1 = user!
-                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+                
                 
                 Database.database().reference().child("users").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
                     
@@ -154,6 +157,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                     }
                 })
             })
+            }
         }
 
     }
@@ -220,7 +224,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     }
     
     let createAccountLabelForLoginSegment: UILabel = {
-        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 0.9)
         var tempLabel = UILabel()
         tempLabel.text = "OneNightBand"
         tempLabel.font = UIFont.systemFont(ofSize: 50.0, weight: UIFontWeightThin)

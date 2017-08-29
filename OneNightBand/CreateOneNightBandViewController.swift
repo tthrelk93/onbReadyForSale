@@ -35,6 +35,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
     var artistUID = String()
     var parentView = CreateWantedAdViewController()
     @IBAction func createONBPressed(_ sender: Any) {
+        print("sender1: \(self.sender1)")
         if(sessionImageView.image != nil && bandNameTextField.text != "" && onbInfoTextView.text != "tap to add a little info about the OneNightBand you are creating (songs to learn, location, etc...)."){
             SwiftOverlays.showBlockingWaitOverlayWithText("Loading Your Bands")
             let imageName = NSUUID().uuidString
@@ -139,11 +140,17 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                                 print(err as Any)
                                 return
                             }
+                            print("sender2: \(self.sender1)")
+                            if self.sender1 == "joinBand"{
+                            let alert = UIAlertController(title: "Success!", message: "OneNightBand Created. Now heading to Artist Finder(Note: This step can be skipped as you can add musicians to your OneNightBand at anytime using the Artist Finder).", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "CreateONBToArtistFinder", sender: self)}))
+                            self.present(alert, animated: true, completion: nil)
                             
-                            
-                                    self.performSegue(withIdentifier: "CreateONBToArtistFinder", sender: self)
-                                
-
+                            } else {
+                                let alert = UIAlertController(title: "Success!", message: "OneNightBand Created and Invite sent. Now heading back to Artist Finder. Check invites and responses from your profile.", preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "CreateONBToArtistFinder", sender: self)}))
+                                self.present(alert, animated: true, completion: nil)
+                            }
                             
                         })
                         
@@ -385,7 +392,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
 
 
     
-    var sender = String()
+    var sender1: String?
     
     // MARK: - Navigation
     var onbObject = ONB()

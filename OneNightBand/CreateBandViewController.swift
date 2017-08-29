@@ -128,8 +128,24 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                                     print(err as Any)
                                     return
                                 }
+                                if self.sender == "joinBand"{
+                                let alert = UIAlertController(title: "Success!", message: "Band Created. Now heading to Artist Finder(Note: This step can be skipped as you can add musicians to your Band at anytime using the Artist Finder).", preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "CreateBandToArtistFinder", sender: self)}))
                                 
-                                    self.segueFunc()
+                                self.present(alert, animated: true, completion: nil)
+                                } else {
+                                    let alert = UIAlertController(title: "Success!", message: "Band Created and invite sent. Now heading to Artist Finder. Check invites and responses from your profile.", preferredStyle: UIAlertControllerStyle.alert)
+                                    alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in self.performSegue(withIdentifier: "CreateBandToArtistFinder", sender: self)}))
+                                    
+                                    self.present(alert, animated: true, completion: nil)
+                                }
+                                
+                               
+                                    
+                                
+
+                                
+                                
                             })
                             //self.finalizeSessionButton.isEnabled = true
                             //self.performSegue(withIdentifier: "CreateBandToBandVC", sender: self)

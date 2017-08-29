@@ -102,6 +102,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                     if let invites = inviteSnap.value as? [String:Any]{
                                         let invite = Invite()
                                         invite.setValuesForKeys(invites)
+                                        invite.inviteKey = inviteSnap.key
                                         self.inviteArray.append(invite)
                                     }
                                 }
@@ -294,15 +295,15 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                         }
                     }
 
-                    if self.inviteArray[indexPathRow].bandType == "onb"{
-                        Database.database().reference().child("users").child(tempUserID!).child("artistsONBs").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if self.inviteArray[invite].bandType == "onb" || self.inviteArray[invite].bandType == "ONB" {
+                        Database.database().reference().child("users").child(self.currentUser!).child("artistsONBs").observeSingleEvent(of: .value, with: { (snapshot) in
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                             for snap in snapshots{
                                 self.onbArray.append(snap.value as! String)
                             }
                             self.onbArray.append(self.inviteArray[invite].bandID)
                             tempDict2["artistsONBs"] = self.onbArray
-                            Database.database().reference().child("users").child(tempUserID!).updateChildValues(tempDict2)
+                            Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict2)
                         }
                         Database.database().reference().child("oneNightBands").child(curCell.bandID).child("onbArtists").observeSingleEvent(of: .value, with: { (snapshot) in
                             var dictionary = [String:Any]()
@@ -310,7 +311,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 for snap in snapshots{
                                     dictionary[snap.key] = snap.value
                                 }
-                                dictionary[tempUserID!] = self.inviteArray[invite].instrumentNeeded
+                                dictionary[self.currentUser!] = self.inviteArray[invite].instrumentNeeded
                                 tempDict3["onbArtists"] = dictionary
                                 
                                 Database.database().reference().child("oneNightBands").child(curCell.bandID).updateChildValues(tempDict3)
@@ -321,10 +322,12 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                     //var index = 0
                                     
-                                    var temp = self.inviteArray[invite].dictionaryWithValues(forKeys: ["inviteKey"])
-                                    for snap in snapshots{
+                                   var temp = self.inviteArray[invite].inviteKey
+                                    Database.database().reference().child("users").child(self.currentUser!).child("invites").child(temp).removeValue()
+                                  //  break
+                                    /*for snap in snapshots{
                                         
-                                        if (snap.value as! [String: Any])["inviteKey"] as! String == temp["inviteKey"] as! String{
+                                        if (snap.key) == temp{
                                             
                                             
                                         }else{
@@ -332,7 +335,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                         }
                                     }
                                     tempDict6["invites"] = tempDict
-                                    Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict6)
+                                    Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict6)*/
                                 }
                                 DispatchQueue.main.async {
                                     
@@ -346,7 +349,8 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                             })
                         })
                 } else {
-                        Database.database().reference().child("users").child(tempUserID!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
+                        print("sender: \(invite)")
+                        Database.database().reference().child("users").child(self.currentUser!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 //var index = 0
                                 for snap in snapshots{
@@ -354,7 +358,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                 }
                                 self.bandArray.append(self.inviteArray[invite].bandID)
                                 tempDict2["artistsBands"] = self.bandArray
-                                Database.database().reference().child("users").child(tempUserID!).updateChildValues(tempDict2)
+                                Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict2)
                             }
                             Database.database().reference().child("bands").child(curCell.bandID).child("bandMembers").observeSingleEvent(of: .value, with: { (snapshot) in
                                 
@@ -363,23 +367,25 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                     for snap in snapshots{
                                         dictionary[snap.key] = snap.value
                                     }
-                                    dictionary[tempUserID!] = self.inviteArray[invite].instrumentNeeded
+                                    dictionary[self.currentUser!] = self.inviteArray[invite].instrumentNeeded
                                     tempDict3["bandMembers"] = dictionary
                                     Database.database().reference().child("bands").child(curCell.bandID).updateChildValues(tempDict3)
                                 }
                                 Database.database().reference().child("users").child(self.currentUser!).child("invites").observeSingleEvent(of: .value, with: { (snapshot) in
                                     var tempDict6 = [String:Any]()
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                        var temp = self.inviteArray[invite].dictionaryWithValues(forKeys: ["inviteKey"])
-                                        for snap in snapshots{
+                                        var temp = self.inviteArray[invite].inviteKey
+                                        Database.database().reference().child("users").child(self.currentUser!).child("invites").child(temp).removeValue()
+                                        
+                                        /*for snap in snapshots{
                                             
-                                            if (snap.value as! [String: Any])["inviteKey"] as! String == temp["inviteKey"] as! String{
+                                            if (snap.key ) == temp{
                                             }else{
                                                 tempDict[snap.key] = snap.value
                                             }
                                         }
                                         tempDict6["invites"] = tempDict
-                                        Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict6)
+                                        Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict6)*/
                                     }
                                     DispatchQueue.main.async {
                                         self.inviteArray.remove(at: invite)
@@ -847,6 +853,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
             cell.bandType = self.inviteArray[indexPath.row].bandType
             cell.sessionDate.text = self.inviteArray[indexPath.row].date
             cell.sessionName.text = self.inviteArray[indexPath.row].bandName
+            
             //cell.responseID = self.auditReceivedArray[indexPath.row].responseID
             
             if self.inviteArray[indexPath.row].bandType == "onb"{

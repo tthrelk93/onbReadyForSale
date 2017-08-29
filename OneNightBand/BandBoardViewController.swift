@@ -84,7 +84,7 @@ class BandBoardViewController: UIViewController, UIPickerViewDelegate,UIPickerVi
                     let dictionary = snap.value as! [String: Any]
                     let tempWanted = WantedAd()
                     tempWanted.setValuesForKeys(dictionary)
-                    if tempWanted.bandType == "band"{
+                    if tempWanted.bandType == "Band"{
                             self.bandWanted.append(tempWanted)
                     } else {
                             print("tw \(tempWanted)")

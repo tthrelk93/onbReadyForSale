@@ -1026,7 +1026,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     tempCell.sessionCellLabel.text = "No Bands"
                     tempCell.isUserInteractionEnabled = false
                 } else {
-                    print("band: \(bandsDict[bandIDArray[indexPath.row]] as! Band)")
+                    //print("band: \(bandsDict[bandIDArray[indexPath.row]] as! Band)")
                 tempCell.sessionCellImageView.loadImageUsingCacheWithUrlString((bandsDict[bandIDArray[indexPath.row]] as! Band).bandPictureURL[0])
                 //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)
                 tempCell.sessionCellLabel.text = (bandsDict[bandIDArray[indexPath.row]] as! Band).bandName

@@ -41,6 +41,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
         popOverVC.didMove(toParentViewController: self)
         popOverVC.artistUID = self.artistUID
         popOverVC.searchType = self.searchType
+        popOverVC.sender1 = "joinBand"
         if self.searchType == "wanted"{
             popOverVC.wantedAd = self.wantedAd
         } else {
@@ -62,6 +63,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
         popOverVC.didMove(toParentViewController: self)
         popOverVC.artistUID = self.artistUID
         popOverVC.searchType = self.searchType
+        popOverVC.sender = "joinBand"
         if self.searchType == "wanted"{
             popOverVC.wantedAd = self.wantedAd
         } else {
@@ -227,11 +229,10 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
                 viewController.searchType = self.searchType
                 //viewController.sessionID = self.bandIDArray[tempIndex]
                 viewController.artistUID = self.artistUID
-                if self.sender == "joinBand"{
+               
                     viewController.sender = "joinBand"
-                } else {
-                    viewController.sender = "myBands"
-                }
+               
+                   
                // viewController.destination = self.destination1
 
             }
@@ -239,12 +240,10 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
             if let viewController = segue.destination as? CreateOneNightBandViewController {
                 viewController.searchType = self.searchType
                 viewController.artistUID = self.artistUID
-                viewController.sender = "myBands"
-                if self.sender == "joinBand"{
-                    viewController.sender = "joinBand"
-                } else {
-                    viewController.sender = "myBands"
-                }
+                //viewController.sender = "myBands"
+                
+                    viewController.sender1 = "joinBand"
+                
 
             }
         }
