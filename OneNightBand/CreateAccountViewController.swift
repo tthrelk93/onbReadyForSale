@@ -161,16 +161,30 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         }
 
     }
+    @IBOutlet weak var loginRegisterButton: UIButton!
    
+    @IBAction func loginRegisterPressed(_ sender: Any) {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            
+            handleLogin()
+        }
+        else{
+            
+            handleRegister()
+        }
+
+    }
     @IBAction func continueWithEPPressed(_ sender: Any) {
         if continueWithEP.titleLabel?.text == "Continue with Email and Password"{
             
             orLabel.isHidden = true
             
         facebookRect.isHidden = true
-        continueWithEP.frame = facebookRect.frame
-        continueWithEP.frame.origin = facebookRect.frame.origin
+        continueWithEP.frame = backButtonFrame.frame
+        continueWithEP.frame.origin = backButtonFrame.frame.origin
         continueWithEP.setTitle("Back", for: .normal)
+           // loginRegisterButton.frame = loginRegFrame.frame
+           // loginRegisterButton.frame.origin = loginRegFrame.frame.origin
             forgotEmailOrPasswordButton.isHidden = false
             inputsContainerView.isHidden = false
             loginRegisterSegmentedControl.isHidden = false
@@ -443,7 +457,9 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         recoverInfoView.isHidden = false
            }
 
+   
 
+    @IBOutlet weak var backButtonFrame: UIView!
     
     
     let forgotEmailOrPasswordButton: UIButton = {
@@ -625,7 +641,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         })
 
     }
-    lazy var loginRegisterButton: UIButton = {
+   /* lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         
         button.backgroundColor = self.ONBPink
@@ -638,13 +654,13 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         
         return button
-    }()
+    }()*/
     func setupLoginRegisterButton(){
         loginRegisterButton.layer.cornerRadius = 10
-        loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        /*loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: forgotEmailOrPasswordButton.bottomAnchor, constant:20).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: loginRegisterSegmentedControl.widthAnchor, multiplier: 1/3 ).isActive = true
-        loginRegisterButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        loginRegisterButton.heightAnchor.constraint(equalToConstant: 30).isActive = true*/
     }
     
     
@@ -1090,7 +1106,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         view.addSubview(forgotEmailOrPasswordButton)
         view.addSubview(loginRegisterSegmentedControl)
         //view.addSubview(facebookLoginButton)
-        view.addSubview(loginRegisterButton)
+        //view.addSubview(loginRegisterButton)
         view.addSubview(createAccountLabel)
         view.addSubview(createAccountLabelForLoginSegment)
         

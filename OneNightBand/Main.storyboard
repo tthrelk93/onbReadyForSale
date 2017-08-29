@@ -4230,6 +4230,23 @@
                                         <rect key="frame" x="-413" y="-254" width="1200" height="957"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WU1-iS-zK0">
+                                        <rect key="frame" x="8" y="591" width="68" height="57"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZJA-7E-1xd">
+                                        <rect key="frame" x="84" y="591" width="207" height="57"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="loginRegisterPressed:" destination="fre-14-aMf" eventType="touchUpInside" id="L12-hM-n0a"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -4275,8 +4292,10 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ONBLabel" destination="shP-AV-Xkz" id="ipr-g0-HoD"/>
+                        <outlet property="backButtonFrame" destination="WU1-iS-zK0" id="Nk1-uc-ThH"/>
                         <outlet property="continueWithEP" destination="JMb-g3-H5t" id="ExY-fb-BOw"/>
                         <outlet property="facebookRect" destination="Qxi-uJ-uUu" id="ttG-GW-BDE"/>
+                        <outlet property="loginRegisterButton" destination="ZJA-7E-1xd" id="a63-97-Iri"/>
                         <outlet property="onbLogo" destination="nzx-h8-ocL" id="IKA-xR-MhA"/>
                         <outlet property="orLabel" destination="2lI-6f-6nc" id="MUc-dD-H7s"/>
                         <outlet property="recoverInfoView" destination="jap-WL-uoQ" id="ucE-XL-ngO"/>
@@ -4876,10 +4895,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="0IB-Ck-bUj"/>
         <segue reference="0n9-07-BFZ"/>
-        <segue reference="wTZ-Ol-XWS"/>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="aDa-Hr-4MX"/>
-        <segue reference="pvU-Tj-C52"/>
         <segue reference="h1s-W6-NlZ"/>
         <segue reference="kHE-LE-wwu"/>
         <segue reference="BfE-VC-iYV"/>
@@ -4887,5 +4902,9 @@
         <segue reference="4hB-mz-Xfn"/>
         <segue reference="3Xi-GS-BzJ"/>
         <segue reference="7DD-y8-pwi"/>
+        <segue reference="aDa-Hr-4MX"/>
+        <segue reference="UZe-b8-Fnt"/>
+        <segue reference="u3n-sT-PPU"/>
+        <segue reference="pvU-Tj-C52"/>
     </inferredMetricsTieBreakers>
 </document>
