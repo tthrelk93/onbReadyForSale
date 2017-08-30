@@ -7,6 +7,7 @@
 //
 
 //import Firebase
+import CoreLocation
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
@@ -15,6 +16,7 @@ import UIKit
 import QuartzCore
 import CoreLocation
 import SwiftOverlays
+
 
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -831,10 +833,16 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user: User?, error) in
             if error != nil {
                 SwiftOverlays.removeAllBlockingOverlays()
-                print(error as Any)
-                let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                print("error: \(error as! Any)")
+                if error?.localizedDescription == "The email address is already in use by another account."{
+                    let alert = UIAlertController(title: "Email In Use.", message: "An account already exists under this email.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
                 
                 
 
@@ -1232,44 +1240,11 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
         
         //picker.delegate = self
-        self.locationManager.requestAlwaysAuthorization()
-        //rotateView(targetView: CreateAccountBackground)
-        //var timer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: Selector(("updateCounter")), userInfo: nil, repeats: true)
-        
-       /* while timer.timeInterval < 10.0{
-            print
-        }*/
-        
-       // ONBLabel.isHidden = false
-       /* DispatchQueue.main.async {
-            sleep(4)
-            
-           // self.triangleBackground.isHidden = false
-           // self.shadeView.isHidden = false
-            self.ONBLabel.isHidden = true
-            //artistAllInfoView.isHidden = false
-            self.inputsContainerView.isHidden = false
-            self.profileImageView.isHidden = false
-            self.profileImageViewButton.isHidden = false
-            self.loginRegisterSegmentedControl.isHidden = false
-            self.loginRegisterButton.isHidden = false
-            self.createAccountLabel.isHidden = true
-            self.createAccountLabelForLoginSegment.isHidden = true
-            self.onbLogo.isHidden = true
-           // self.onbNameLogo.isHidden = false
-            self.smallerONBLogo.isHidden = true
-
-        }*/
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-       /* if (FBSDKAccessToken.current() != nil) {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        /* if (FBSDKAccessToken.current() != nil) {
             self.user = (Auth.auth().currentUser?.uid)! //(user?.uid)!
             //self.account = values
             print("duh")
@@ -1315,12 +1290,16 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
         }
     var tempDict = [String: Any]()
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         var locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        //tempDict = ["lat":locValue.latitude, "long": locValue.longitude]
-        
-        
-        }
+        var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //var ref = Database.database().reference.child("users").child(Auth.auth().currentUser.uid).child("location")
+        //ref.updateChildValues(locDict)
+    }
+
+    //var locationManager = CLLocationManager()
+    
    
     
 }

@@ -26,6 +26,7 @@ pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
 pod 'FlexibleSteppedProgressBar'
+#pod 'GeoFire', '~> 1.1'
 
 
 
@@ -47,6 +48,7 @@ pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
 pod 'FlexibleSteppedProgressBar'
+#pod 'GeoFire', '~> 1.1'
 
   end
 
@@ -66,6 +68,7 @@ pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
 pod 'FlexibleSteppedProgressBar'
+#pod 'GeoFire', '~> 1.1'
   end
 
 end

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
@@ -15,13 +16,15 @@ import DropDown
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
+
+class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     @IBAction func logoutPressed(_ sender: Any) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
         handleLogout()
     }
-    
+    let locationManager = CLLocationManager()
     @IBOutlet weak var logoutButton: UIButton!
     @IBAction func segmentSwitched(_ sender: Any) {
         if self.bandONBSegment.selectedSegmentIndex == 0 {
@@ -354,6 +357,10 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var dropDown: DropDown?
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
         self.noBandsLabel.layer.borderWidth = 1
         self.noBandsLabel.layer.borderColor = UIColor.darkGray.cgColor
         self.hideButton.layer.cornerRadius = 10
@@ -1122,6 +1129,17 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         
         
     }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        var locDict = ["lat" : locValue.latitude, "long": locValue.longitude]
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        var ref = Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).child("location")
+        ref.updateChildValues(locDict)
+    }
+
+    
+    
     var tempIndex = Int()
     
     
