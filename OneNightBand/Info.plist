@@ -30,13 +30,13 @@
 	<key>CFBundleIcons~ipad</key>
 	<dict/>
 	<key>CFBundleIdentifier</key>
-	<string>com.tthrelk.ios</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.5</string>
+	<string>1.0.9</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -47,7 +47,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.5</string>
+	<string>1.0.9</string>
 	<key>FacebookAppID</key>
 	<string>1915443838684965</string>
 	<key>FacebookDisplayName</key>
@@ -64,7 +64,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>OneNightBand needs to access your Media Library so that you can select, and add to your Session, mp3&apos;s that you have recorded and have the rights to.</string>
+	<string>OneNightBand needs to access your Media Library so that you can select, and add to your Session, mp3's that you have recorded and have the rights to.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>OneNightBand needs your location to find musicians in your area or in the city that you are searching for. Your specific location will NOT be given to anyone. Users will only be able to see what city you are in.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

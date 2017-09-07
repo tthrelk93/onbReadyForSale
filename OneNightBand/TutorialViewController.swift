@@ -297,37 +297,22 @@ class TutorialViewController: UIViewController, UICollectionViewDataSource, UICo
             if loginWithFacebook == true {
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
-                
-                
                 let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "picture.type(large)"])
                 let _ = request?.start(completionHandler: { (connection, result, error) in
                     guard let userInfo = result as? [String: Any] else { return } //handle the error
-                    
                     //The url is nested 3 layers deep into the result so it's pretty messy
                     if let imageURL = ((userInfo["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
                         print("url: \(imageURL)")
                         let data = NSData(contentsOf: URL(string: imageURL)!) // NSData(contentsOf: url){
                         //print("data: \(String(describing: data))")
                         let image = (UIImage(data: data! as Data)!)
-                        
-                        
-                        
                         let profileImage = image
-                        // let uploadData = UIImageJPEGRepresentation(image, 0.1)
-                        //print("uploadData: \(uploadData)")
-                        
-                        //storageRef.putData(uploadData)
-                        
-                        
                         storageRef.putData(data! as Data, metadata: nil, completion: { (metadata, error) in
                             
                             if error != nil {
                                 print(error as Any)
                                 return
                             }
-                            
-                            
-                            
                             let profileImageUrl = metadata?.downloadURL()?.absoluteString
                             self.account["profileImageUrl"] = [profileImageUrl]
                             self.account["instruments"] = self.tagsAndSkill
@@ -339,18 +324,17 @@ class TutorialViewController: UIViewController, UICollectionViewDataSource, UICo
                             }
                         })
                         
-                        
-                    } else {
-                        
-                        self.account["instruments"] = self.tagsAndSkill
-                        self.account["bio"] = self.editBioTextView.text as Any?
-                        print("account: \(self.account)")
-                        self.registerUserIntoDatabaseWithUID(self.user, values: self.account)
-                        self.performSegue(withIdentifier: "LoginSegue", sender: self)
                     }
-
                 })
+            } else {
+                
+                self.account["instruments"] = self.tagsAndSkill
+                self.account["bio"] = self.editBioTextView.text as Any?
+                print("account: \(self.account)")
+                self.registerUserIntoDatabaseWithUID(self.user, values: self.account)
+                self.performSegue(withIdentifier: "LoginSegue", sender: self)
             }
+
     
     
         

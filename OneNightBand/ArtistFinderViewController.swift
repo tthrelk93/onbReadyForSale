@@ -620,12 +620,27 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var collectPosition2: UIView!
     var collectPosition1Origin = CGPoint()
     
+    @IBOutlet weak var explanatoryView: UIView!
+    
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        explanatoryView.isHidden = false
+    }
     
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var backExpButton: UIButton!
     
+    @IBOutlet weak var bandTextView: UITextView!
+    @IBOutlet weak var infoButton: UIButton!
+    @IBOutlet weak var onbTextView: UITextView!
     
+    @IBAction func backExpPressed(_ sender: Any) {
+        explanatoryView.isHidden = true
+    }
    override func viewDidLoad() {
         super.viewDidLoad()
+    infoButton.layer.cornerRadius = infoButton.frame.width/2
+    bandTextView.text = "Create a Band if you want to find musicians who are looking to join a lasting band that regularly meets."
+    onbTextView.text = "Create a OneNightBand if you want a spur of the moment jam session or you are travelling and want to play with local musicians that you may not ever see again."
     if createInviteSuccess == true{
         let alert = UIAlertController(title: "Success!", message: "Invite sent.", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))

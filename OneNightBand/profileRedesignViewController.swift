@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import DropDown
 import CoreLocation
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import SwiftOverlays
-import DropDown
+
 import FBSDKCoreKit
 import FBSDKLoginKit
 
 
 class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+    var dropDown2: DropDown?
     @IBAction func logoutPressed(_ sender: Any) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
@@ -84,7 +85,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var pianoLine2: UIView!
     @IBOutlet weak var pianoLine1: UIView!
     
-    @IBOutlet weak var artistName: UILabel!
+   // @IBOutlet weak var artistName: UILabel!
     @IBOutlet weak var artistBio: UITextView!
     @IBOutlet weak var onbCollect: UICollectionView!
     @IBOutlet weak var bandCollect: UICollectionView!
@@ -232,10 +233,10 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var dropDownLabel: UILabel!
     var selectedCount = 0
     //let dropDown = DropDown()
-    var dropDown2: DropDown?
+    
     var lvlArray = [Int]()
     func set_years_playing(){
-        
+       // dropDown2 = DropDown()
         dropDownLabel.text = "Select the number of years have you been playing this instrument"
         dropDown2?.selectionBackgroundColor = self.ONBPink
         dropDown2?.anchorView = self.view//collectionView.cellForItem(at: indexPath)
@@ -290,7 +291,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                         let value = snapshot.value as? NSDictionary
                         
                         self.artistBio.text = value?["bio"] as! String
-                        self.artistName.text = (value?["name"] as! String)
+                        self.navBar.topItem?.title = (value?["name"] as! String)
                         let instrumentDict = value?["instruments"] as! [String: Any]
                         self.dictionaryOfInstruments = value?["instruments"] as! [String: Any]
                         //var instrumentArray = [String]()
@@ -343,6 +344,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var noBandsLabel: UILabel!
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     
+    @IBOutlet weak var navBar: UINavigationBar!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var notificationBubble1: UILabel!
     var inviteCount = 0
@@ -355,8 +357,37 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var tempID = String()
     var sizingCell6:TagCell?
     var dropDown: DropDown?
+    
+    func navButtonPressed(){
+        if notYourProfView.isHidden == false {
+            print("sender: \(self.sender)")
+            if self.sender == "onb"{
+                self.performSegue(withIdentifier: "ProfileToONB", sender: self)
+            } else if self.sender == "feed" || self.sender == "tab"{
+                if self.backToSM == false {
+                    performSegue(withIdentifier: "redesignProfileToFeed", sender: self)
+                } else {
+                    performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
+                }
+            } else if self.sender == "af"{
+                performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
+            } else if self.sender == "band" {
+                self.performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
+            }
+        } else {
+            let loginManager = FBSDKLoginManager()
+            loginManager.logOut()
+            handleLogout()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        var tempItem = self.navigationItem
+        var navBack = UINavigationItem()
+        
+        
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
@@ -371,7 +402,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         bioTextView.delegate = self
         
         
-        
+        dropDown = DropDown()
+        dropDown2 = DropDown()
         dropDown?.selectionBackgroundColor = self.ONBPink
         dropDown?.anchorView = self.view//collectionView.cellForItem(at: indexPath)
         dropDown?.dataSource = ["Beginner","Intermediate","Advanced","Expert","Pro"]
@@ -412,19 +444,34 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if Auth.auth().currentUser?.uid != self.artistID{
             self.notUser = true
             //self.tabBar.isHidden = true
-            self.backButton.isHidden = false
+            
             self.notificationBubble1.isHidden = true
             self.notificationBubble2.isHidden = true
-                self.logoutButton.isHidden = true
+            
                 self.notYourProfView.isHidden = false
+            
+            
+            let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(profileRedesignViewController.navButtonPressed))
+            
+            newBackButton.tintColor = ONBPink
+            navBack.leftBarButtonItem = newBackButton
+            
+            navBar.setItems([tempItem, navBack], animated: true)
+
             
         } else {
             self.notUser = false
            // self.tabBar.isHidden = false
             self.notificationBubble1.isHidden = false
             self.notificationBubble2.isHidden = false
-            self.backButton.isHidden = true
-            self.logoutButton.isHidden = false
+            
+            let newBackButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.plain, target: self, action: #selector(profileRedesignViewController.navButtonPressed))
+            
+            newBackButton.tintColor = ONBPink
+            navBack.leftBarButtonItem = newBackButton
+            
+            navBar.setItems([tempItem, navBack], animated: true)
+
             
             self.notYourProfView.isHidden = true
            
@@ -435,7 +482,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         self.menuView.isHidden = true
         self.artistInfoView.isHidden = true
         self.artistBio.isHidden = true
-        self.artistName.isHidden = true
+        //self.artistName.isHidden = true
         tabBar.delegate = self
         picCollect.layer.cornerRadius = 10
         
@@ -564,8 +611,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 let value = snapshot.value as? NSDictionary
                 self.artistBio.text = value?["bio"] as! String
                 self.bioTextView.text = value?["bio"] as! String
-
-                self.artistName.text = (value?["name"] as! String)
+               
+                self.navBar.topItem?.title = (value?["name"] as! String)
                 let instrumentDict = value?["instruments"] as! [String: Any]
                 self.dictionaryOfInstruments = value?["instruments"] as! [String: Any]
                 //var instrumentArray = [String]()
@@ -681,7 +728,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             self.artistInfoView.isHidden = false
                                             self.picCollect.isHidden = false
                                             self.artistBio.isHidden = false
-                                            self.artistName.isHidden = false
+                                           // self.artistName.isHidden = false
                                             //self.logoutButton.isHidden = false
                                             let cellNib2 = UINib(nibName: "TagCell", bundle: nil)
                                             self.instrumentCollect.register(cellNib2, forCellWithReuseIdentifier: "TagCell")

@@ -587,7 +587,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     
     @IBOutlet weak var facebookRect: UIButton!
     func setupFacebookLoginButton(){
-        facebookRect.layer.cornerRadius = 10
+        //facebookRect.layer.cornerRadius = 10
         
        //facebookLoginButton.frame = continueWithEP.frame
         /*facebookLoginButton.frame.origin = continueWithEP.frame.origin
@@ -658,7 +658,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         return button
     }()*/
     func setupLoginRegisterButton(){
-        loginRegisterButton.layer.cornerRadius = 10
+        //loginRegisterButton.layer.cornerRadius = 10
         /*loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: forgotEmailOrPasswordButton.bottomAnchor, constant:20).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: loginRegisterSegmentedControl.widthAnchor, multiplier: 1/3 ).isActive = true
@@ -800,6 +800,8 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                 vc.user = self.user
                 if loginWithFacebook == true{
                     vc.loginWithFacebook = true
+                } else {
+                    vc.loginWithFacebook = false
                 }
             }
             
@@ -1102,7 +1104,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                 super.viewDidLoad()
         forgotEmailOrPasswordButton.isHidden = true
         self.continueWithEPRect = continueWithEP.frame
-        continueWithEP.layer.cornerRadius = 10
+        //continueWithEP.layer.cornerRadius = 10
         
         //let loginManager = FBSDKLoginManager()
        // loginManager.logOut()

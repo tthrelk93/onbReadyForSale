@@ -44,6 +44,16 @@ extension FeedDismissalDelegate where Self: UIViewController
 class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,UINavigationControllerDelegate, FeedDismissalDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UITabBarDelegate{
     @IBOutlet weak var sessionBioTextView: UITextView!
     
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        if feedInfoView.isHidden == true{
+            feedInfoView.isHidden = false
+        } else {
+            feedInfoView.isHidden = true
+        }
+    }
+    
+    @IBOutlet weak var feedInfoView: UIView!
+    @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var sessionImageView: UIImageView!
     @IBOutlet weak var sessionViewCountLabel: UILabel!
@@ -299,7 +309,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var bandButtonExp = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        infoButton.layer.cornerRadius = 10
+        feedInfoView.layer.cornerRadius = 10
         self.bandNameButton.setTitle("?", for: .normal)
         self.bandButtonOigin = self.bandNameButton.bounds
         self.bandButtonCoord = self.bandNameButton.frame.origin
