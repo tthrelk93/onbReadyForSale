@@ -11,6 +11,9 @@ PODS:
   - Firebase/Database (4.1.0):
     - Firebase/Core
     - FirebaseDatabase (= 4.0.1)
+  - Firebase/Messaging (4.1.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.0.1)
   - Firebase/Storage (4.1.0):
     - Firebase/Core
     - FirebaseStorage (= 2.0.1)
@@ -32,6 +35,12 @@ PODS:
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (2.0.1):
     - FirebaseCore (~> 4.0)
+  - FirebaseMessaging (2.0.1):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (2.0.1):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
@@ -40,6 +49,8 @@ PODS:
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/Logger (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.1):
@@ -59,6 +70,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Player (0.2.2)
+  - Protobuf (3.4.0)
   - SwiftOverlays (3.0.0)
   - YNDropDownMenu (2.3.3)
   - YouTubePlayer (0.4.0)
@@ -69,6 +81,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Messaging
   - Firebase/Storage
   - FlexibleSteppedProgressBar
   - IQKeyboardManagerSwift
@@ -86,6 +99,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 7d876ea97a830cbe62ba7fbbe7670c833a324ba0
   FirebaseDatabase: 94c38c783d23dc6679441050772d42e801d06e9e
   FirebaseInstanceID: 0500e3cb54a1a4e01a8cffcc09323b8bb8fc7e1e
+  FirebaseMessaging: b45ff9ef5d932600d3f78ff43168e7c5707aa7dc
   FirebaseStorage: 661fc1f8d4131891d256b62e82a45ace8b3f0c3b
   FlexibleSteppedProgressBar: 599c2e738903fa9d76e0773044a501e3ee64f6d9
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
@@ -96,10 +110,11 @@ SPEC CHECKSUMS:
   leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Player: 5cff076cc9f13b51f56b6fb7bed24431569b8102
+  Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
   YNDropDownMenu: daf148f5d89c47d0514b1622eee2c35b9c58951f
   YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
 
-PODFILE CHECKSUM: 75bd442cc2d50bb4e25d0612f3deb12e777fef63
+PODFILE CHECKSUM: 241b0e80264733642be9e9850d794b2c53ef820d
 
 COCOAPODS: 1.2.0

@@ -1762,7 +1762,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view hidden="YES" autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cqP-KQ-Uuo">
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cqP-KQ-Uuo">
                                 <rect key="frame" x="6" y="124" width="360" height="297"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -3166,7 +3166,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiL-Lo-dhq">
-                                                <rect key="frame" x="-1" y="61" width="244" height="86"/>
+                                                <rect key="frame" x="-1" y="55" width="244" height="92"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3174,7 +3174,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qjO-dt-89Z">
-                                                <rect key="frame" x="-1" y="153" width="244" height="100"/>
+                                                <rect key="frame" x="-1" y="176" width="244" height="103"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3200,7 +3200,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create OneNightBand" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KyZ-TM-nf0">
-                                                <rect key="frame" x="-1" y="126" width="245" height="21"/>
+                                                <rect key="frame" x="-2" y="153" width="245" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <color key="textColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -3223,17 +3223,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.97661751760563376" colorSpace="calibratedWhite"/>
                             </view>
-                            <tabBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="4sr-pW-WLd">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <tabBarItem title="Find Musicians" image="search-icon-png-0" id="tRL-RC-ocZ"/>
-                                    <tabBarItem title="Join Band" image="55428-200" id="6ma-uj-Fb0"/>
-                                    <tabBarItem title="Profile" image="profile-user-outline-vector-icon--social-icons--icons-download-26" id="Ikh-Da-TD6"/>
-                                    <tabBarItem title="Release Feed" image="headphone-512" id="N2N-wk-1he"/>
-                                </items>
-                            </tabBar>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5xV-Mb-9Od">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -3279,6 +3268,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.83040823063380287" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <tabBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="4sr-pW-WLd">
+                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem title="Find Musicians" image="search-icon-png-0" id="tRL-RC-ocZ"/>
+                                    <tabBarItem title="Join Band" image="55428-200" id="6ma-uj-Fb0"/>
+                                    <tabBarItem title="Profile" image="profile-user-outline-vector-icon--social-icons--icons-download-26" id="Ikh-Da-TD6"/>
+                                    <tabBarItem title="Release Feed" image="headphone-512" id="N2N-wk-1he"/>
+                                </items>
+                            </tabBar>
                         </subviews>
                         <color key="backgroundColor" red="0.01157194749" green="0.17538008090000001" blue="0.36648088690000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -4324,18 +4324,6 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Qxi-uJ-uUu">
-                                        <rect key="frame" x="8" y="599" width="359" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.18157732845534588" green="0.27636501293075005" blue="0.47396384803921565" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Continue with Facebook">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="facebookRectPressed:" destination="fre-14-aMf" eventType="touchUpInside" id="b0X-5r-NqO"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZJA-7E-1xd">
                                         <rect key="frame" x="84" y="591" width="207" height="57"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -4349,7 +4337,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="JMb-g3-H5t">
-                                        <rect key="frame" x="8" y="531" width="359" height="60"/>
+                                        <rect key="frame" x="8" y="599" width="359" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -4358,6 +4346,18 @@
                                         </state>
                                         <connections>
                                             <action selector="continueWithEPPressed:" destination="fre-14-aMf" eventType="touchUpInside" id="NWI-L4-QXH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Qxi-uJ-uUu">
+                                        <rect key="frame" x="8" y="531" width="359" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.18157732845534588" green="0.27636501293075005" blue="0.47396384803921565" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Continue with Facebook">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="facebookRectPressed:" destination="fre-14-aMf" eventType="touchUpInside" id="b0X-5r-NqO"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -5006,17 +5006,17 @@
         <image name="tick-blue" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="Ym2-Ij-d9a"/>
-        <segue reference="eQS-lv-tpk"/>
-        <segue reference="BIm-XO-WxK"/>
-        <segue reference="9wv-3l-4LX"/>
-        <segue reference="b7d-an-12b"/>
+        <segue reference="h1s-W6-NlZ"/>
         <segue reference="GQk-Lo-KWh"/>
+        <segue reference="0IB-Ck-bUj"/>
         <segue reference="3Xi-GS-BzJ"/>
+        <segue reference="BfE-VC-iYV"/>
+        <segue reference="kHE-LE-wwu"/>
         <segue reference="4hB-mz-Xfn"/>
         <segue reference="oxs-N4-4FF"/>
+        <segue reference="UZe-b8-Fnt"/>
         <segue reference="aDa-Hr-4MX"/>
+        <segue reference="u3n-sT-PPU"/>
         <segue reference="pvU-Tj-C52"/>
         <segue reference="7DD-y8-pwi"/>
     </inferredMetricsTieBreakers>

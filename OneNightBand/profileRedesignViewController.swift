@@ -13,6 +13,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import SwiftOverlays
+import FirebaseMessaging
 
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -383,6 +384,13 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let deviceToken = appDelegate.deviceToken
+        var tokenDict = [String: Any]()
+        tokenDict["noteToken"] = deviceToken
+        Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
+        
         var tempItem = self.navigationItem
         var navBack = UINavigationItem()
         
@@ -1080,6 +1088,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     tempCell.sessionCellLabel.text = "No Bands"
                     tempCell.isUserInteractionEnabled = false
                 } else {
+                    
                     //print("band: \(bandsDict[bandIDArray[indexPath.row]] as! Band)")
                 tempCell.sessionCellImageView.loadImageUsingCacheWithUrlString((bandsDict[bandIDArray[indexPath.row]] as! Band).bandPictureURL[0])
                 //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)

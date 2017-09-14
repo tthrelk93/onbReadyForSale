@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseCore
 import FirebaseAuth
+import FirebaseMessaging
 import UserNotifications
 import FBSDKCoreKit
 
@@ -37,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
      
         
@@ -86,6 +88,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //[[FBSDKApplicationDelegate sharedInstance] application:application
            // didFinishLaunchingWithOptions:launchOptions]
         // Add any custom logic here.
+        
+        
+       /* if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {_, _ in })
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()*/
     
     
 
@@ -128,6 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        //Messaging.messaging().sendMessage(<#T##message: [AnyHashable : Any]##[AnyHashable : Any]#>, to: <#T##String#>, withMessageID: <#T##String#>, timeToLive: <#T##Int64#>)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -142,10 +162,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("MessageID: \(userInfo["gcm_message_id"]!)")
+        print(userInfo)
+    }
+    var deviceToken: String?
     // Called when APNs has assigned the device a unique token
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Convert token to string
+        Messaging.messaging().shouldEstablishDirectChannel = true
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        self.deviceToken = deviceTokenString
         
         // Print it to console
         print("APNs device token: \(deviceTokenString)")

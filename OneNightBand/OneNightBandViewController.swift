@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
+import FirebaseMessaging
 
 class OneNightBandViewController: UIViewController, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, PerformSegueInBandBoard, UICollectionViewDelegate, UICollectionViewDataSource /*GetSessionIDDelegate, DismissalDelegate*/ {
     internal func joinBand(bandID: String, wantedAd: WantedAd) {
@@ -469,6 +470,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
     }
     
     var destination = String()
+    
 
     var thisONB = ONB()
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {

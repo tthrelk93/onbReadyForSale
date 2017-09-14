@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 //import Firebase
+import FirebaseMessaging
 import FirebaseDatabase
 import CoreLocation
 import FirebaseAuth
@@ -890,11 +891,28 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     var selectedONB = ONB()
     var selectedBand = Band()
     
+    var Timestamp: String {
+        return "\(NSDate().timeIntervalSince1970 * 1000)"
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == onbCollect {
             self.selectedONB = onbArray[indexPath.row]
             self.bandType = "ONB"
             
+            //attempting PushNotification
+            var receivingToken = String()
+            ref.child("users").child(self.artistUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if snap.key == "noteToken"{
+                            receivingToken = snap.value as! String
+                            var messageID = String("\(Auth.auth().currentUser?.uid)" + "\(self.Timestamp)")
+                            Messaging.messaging().sendMessage(["Invite": "You have received a new invite!"], to: "244864226642@gcm.googleapis.com", withMessageID: messageID!, timeToLive: 1000000)
+                        }
+                    }
+                }
+            })
             
             
             ref.child("users").child(self.artistUID).child("invites").observeSingleEvent(of: .value, with: { (snapshot) in

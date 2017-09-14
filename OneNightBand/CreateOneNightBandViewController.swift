@@ -10,6 +10,7 @@ import UIKit
 import FirebaseCore
 import FirebaseDatabase
 import FirebaseStorage
+import FirebaseMessaging
 import FirebaseAuth
 import SwiftOverlays
 
@@ -34,6 +35,11 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
     var metaData: String?
     var artistUID = String()
     var parentView = CreateWantedAdViewController()
+    
+    var Timestamp: String {
+        return "\(NSDate().timeIntervalSince1970 * 1000)"
+    }
+    
     @IBAction func createONBPressed(_ sender: Any) {
         print("sender1: \(self.sender1)")
         if(sessionImageView.image != nil && bandNameTextField.text != "" && onbInfoTextView.text != "tap to add a little info about the OneNightBand you are creating (songs to learn, location, etc...)."){
@@ -87,6 +93,21 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         self.parentView.bandType = "ONB"
                         self.removeAnimate()
                     } else if self.searchType == "af"{
+                        //push
+                        var receivingToken = String()
+                        ref.child("users").child(self.artistUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                for snap in snapshots{
+                                    if snap.key == "noteToken"{
+                                        receivingToken = snap.value as! String
+                                        var messageID = String("\(Auth.auth().currentUser?.uid)" + "\(self.Timestamp)")
+                                        Messaging.messaging().sendMessage(["Invite": "You have received a new invite!"], to: "244864226642@gcm.googleapis.com", withMessageID: messageID!, timeToLive: 1000000)
+                                    }
+                                }
+                            }
+                        })
+
+                        
                         let recipient = self.ref.child("users").child(self.artistUID).child("invites")
                         let tempID = recipient.childByAutoId()
                         

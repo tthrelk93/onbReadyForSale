@@ -36,7 +36,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.9</string>
+	<string>1.1.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -47,11 +47,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.9</string>
+	<string>1.1.1</string>
 	<key>FacebookAppID</key>
 	<string>1915443838684965</string>
 	<key>FacebookDisplayName</key>
 	<string>OneNightBand</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -71,6 +73,10 @@
 	<string>OneNightBand needs your location to find musicians in your area or in the city the you search for. Your specific location will NOT be given to anyone. Users will only be able to see what city you are in.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to select user photo.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

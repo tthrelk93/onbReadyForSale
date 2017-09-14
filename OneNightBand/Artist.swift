@@ -26,6 +26,7 @@ class Artist: NSObject{
     var wantedAdResponses = [String]()
     var wantedAds = [String]()
     var acceptedAudits = [[String:Any]]()
+    var noteToken = String()
     
     
     

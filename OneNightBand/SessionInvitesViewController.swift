@@ -85,7 +85,10 @@ class SessionInvitesViewController: UIViewController{
         super.viewDidLoad()
         self.auditionsAlertCount.isHidden = true
         self.auditsReceivedAlertCount.isHidden = true
-        self.invitesAlertCount.isHidden = true
+        self.auditionsAlertCount.isHidden = true
+        invitesAlertCount.layer.cornerRadius = invitesAlertCount.frame.width/2
+        auditsReceivedAlertCount.layer.cornerRadius = invitesAlertCount.frame.width/2
+        invitesAlertCount.layer.cornerRadius = invitesAlertCount.frame.width/2
         
         ref.child("users").child(currentUser!).observeSingleEvent(of: .value, with: {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
