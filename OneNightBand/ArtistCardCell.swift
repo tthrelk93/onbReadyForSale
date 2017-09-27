@@ -94,6 +94,8 @@ class ArtistCardCell: UICollectionViewCell {
             //values["bandType"] = self.bandType
             values["bandName"] = ""//self.bandName
             values["inviteResponse"] = String()
+                
+                
             
             
             /*tempID.updateChildValues(values, withCompletionBlock: {(err, ref) in
@@ -115,6 +117,36 @@ class ArtistCardCell: UICollectionViewCell {
         
 
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        
+        sessionId = String()
+        coordinateUser1 = CLLocation()
+        coordinateUser2 = CLLocation()
+        //var distance: Double?
+        
+        tempLong = CLLocationDegrees()
+        tempLat = CLLocationDegrees()
+        
+        ref = Database.database().reference()
+        artistUID = String()
+        buttonName = String()
+        invitedBandID = String()
+        bandType = String()
+        artistCount = Int()
+        sessionDate = String()
+        
+        artistCardCellNameLabel.text = ""
+        artistCardCellBioTextView.text = ""
+        
+        
+        artistCardCellImageView.image = UIImage()
+        
+       distanceLabel.text = ""
+        reputationLabel.text = ""
+        
+    }
     
     
     
@@ -125,6 +157,7 @@ class ArtistCardCell: UICollectionViewCell {
     
     var tempLong: CLLocationDegrees?
     var tempLat: CLLocationDegrees?
+    
     override func awakeFromNib() {
             }
     

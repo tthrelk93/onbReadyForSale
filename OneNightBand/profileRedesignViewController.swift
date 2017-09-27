@@ -19,8 +19,12 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 
-class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
+class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout, MessagingDelegate {
     var dropDown2: DropDown?
+    var mToken: String?
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        self.mToken = fcmToken
+    }
     @IBAction func logoutPressed(_ sender: Any) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
@@ -358,8 +362,9 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var tempID = String()
     var sizingCell6:TagCell?
     var dropDown: DropDown?
-    
+    var backPressedBool = false
     func navButtonPressed(){
+        backPressedBool = true
         if notYourProfView.isHidden == false {
             print("sender: \(self.sender)")
             if self.sender == "onb"{
@@ -371,6 +376,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
                 }
             } else if self.sender == "af"{
+                
                 performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
             } else if self.sender == "band" {
                 self.performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
@@ -386,9 +392,9 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         super.viewDidLoad()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let deviceToken = appDelegate.deviceToken
+        self.mToken = Messaging.messaging().fcmToken//appDelegate.deviceToken
         var tokenDict = [String: Any]()
-        tokenDict["noteToken"] = deviceToken
+        tokenDict["noteToken"] = mToken
         Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
         
         var tempItem = self.navigationItem
@@ -827,6 +833,9 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         }
         if segue.identifier == "ProfileToFindMusicians"{
             if let vc = segue.destination as? ArtistFinderViewController{
+                if backPressedBool == true {
+                    vc.backButtonPressed = true
+                }
                 //if self.afType == "band"{
                     //vc.thisBandObject = self.thisBand
                     vc.senderScreen = "profile"

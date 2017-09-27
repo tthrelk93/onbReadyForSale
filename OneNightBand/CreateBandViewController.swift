@@ -111,7 +111,9 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                                 //values["artistCount"] = self.artistCount
                                 //values["bandType"] = self.bandType
                                 self.inviteDict["bandName"] = self.bandNameTextField.text
+                            self.inviteDict["instrumentNeeded"] = self.instrumentNeeded
                             self.inviteDict["sender"] = Auth.auth().currentUser?.uid
+                            self.inviteDict["inviteResponse"] = ""
                                 //values["inviteResponse"] = String()
                                 tempID.updateChildValues(self.inviteDict, withCompletionBlock: {(err, ref) in
                                     if err != nil {
@@ -408,6 +410,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
     // MARK: - Navigation
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     var bandID = String()
+    var instrumentNeeded = String()
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

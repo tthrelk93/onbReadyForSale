@@ -13,7 +13,7 @@ class Artist: NSObject{
     var name: String?
     var email: String?
     var instruments = [String:Any]()
-    var invites = [String:Any]()
+    var invites: [String:Any]?
     var password: String?
     var artistUID: String?
     var bio: String?
@@ -26,7 +26,7 @@ class Artist: NSObject{
     var wantedAdResponses = [String]()
     var wantedAds = [String]()
     var acceptedAudits = [[String:Any]]()
-    var noteToken = String()
+    var noteToken: String?
     
     
     

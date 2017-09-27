@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (FBSDKAccessToken.current() != nil) {
             //if you are logged
             print("logged in")
-            self.window?.rootViewController?.performSegue(withIdentifier: "LoginSegue", sender: self)
+            //self.window?.rootViewController?.performSegue(withIdentifier: "LoginSegue", sender: self)
         } else {
             //if you are not logged
         }
@@ -106,11 +106,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.registerForRemoteNotifications()*/
     
-    
-
         
+        
+    
+    
+   // application.registerForRemoteNotifications()
+
+    
         // iOS 10 support
         if #available(iOS 10, *) {
+            //UNUserNotificationCenter.current().delegate = (self as! UNUserNotificationCenterDelegate)
+            // For iOS 10 data message (sent via FCM)
+            //Messaging.messaging().remoteMessageDelegate = (self as! MessagingDelegate)
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
         }
@@ -160,6 +167,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    var token: String?
+    func connectToFBMessaging()
+    {
+        Messaging.messaging().shouldEstablishDirectChannel = true
+        /*Messaging.messaging().connect { (error) in
+            if (error != nil)
+            {
+                print("unable to connect lol \(error)")
+            }
+            else
+            {
+                print("connected to firebase")
+            }
+        }*/
+    }
+    
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        self.token = Messaging.messaging().fcmToken
+        
+        //let refreshedToken = FIRInstanceID.instanceID().token()
+        // print("InstanceID token: \(refreshedToken)")
+        connectToFBMessaging()
+        
+    }
+    
+    func tokenRefreshNotification(notification: NSNotification)
+    {
+        self.token = Messaging.messaging().fcmToken
+        //let refreshedToken = FIRInstanceID.instanceID().token()
+       // print("InstanceID token: \(refreshedToken)")
+        connectToFBMessaging()
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

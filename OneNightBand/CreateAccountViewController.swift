@@ -125,20 +125,62 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             } else if (result?.isCancelled)! {
                 // Handle cancellations
             } else {
-            
-            //let user = Auth.auth().currentUser
+            //result.
+            let user = Auth.auth().currentUser
+                print("userrrrr: \(String(describing: user?.email))")
             SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
             let accessToken = FBSDKAccessToken.current()
             guard let accessTokenString = accessToken?.tokenString else { return }
             
             let credentials = FacebookAuthProvider.credential(withAccessToken: accessTokenString)
+                
+               /* Auth.auth().currentUser?.link(with: credentials) { (user2, error) in
+                    // ...
+                    if error != nil {
+                        print("error1: \(error?.localizedDescription)")
+                        let prevUser = Auth.auth().currentUser
+                        Auth.auth().signIn(with: credentials) { (user, error) in
+                            if let error = error {
+                                print("error1: \(error.localizedDescription)")
+                                return
+                            }
+                            // User is signed in
+                            self.facebookRect.isEnabled = false
+                            self.user1 = user!
+                            self.fbLoginVerified(user: self.user1!)
+                        }
+
+                    } else {
+                    print("link did not fail")
+                    self.facebookRect.isEnabled = false
+                    self.user1 = user2!
+                    self.fbCreateAccountVerified(user: user2!)
+                    }
+                    //self.performSegue(withIdentifier: , sender: self)
+                }
+                // Merge prevUser and currentUser accounts and data
+                
+            }
+        }*/
+                
+    
+        
             Auth.auth().signIn(with: credentials, completion: { (user, error) in
                 if let error = error {
                     print("erororororor")
-                    print(error)
-                    
+                  if error.localizedDescription == "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address."{
+                    SwiftOverlays.removeAllBlockingOverlays()
+                    let alert = UIAlertController(title: "Account already exists with this email", message: "It appears an account is already linked to this email. Please sign in with that email and password.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                     return
+                    
+                    }
+                    
+                    
                 }
+               
+                self.facebookRect.isEnabled = false
                 self.user1 = user!
                 
                 
@@ -578,7 +620,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
 
         func fbLoginVerified(user: User){
             self.user = (user.uid)
-            
+            print("33333")
             self.performSegue(withIdentifier: "LoginSegue", sender: self)
             //print("Successfully logged in with our user: ", user ?? "")
        
@@ -633,6 +675,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                             UserDefaults.standard.setValue(authData?.uid, forKey: "uid")
                             
                             // Segue to the next view
+                            print("222222")
                             self.performSegue(withIdentifier: "LoginSegue", sender: self)
                             
                         }
@@ -776,7 +819,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             else{
                 self.user = (user?.uid)!
                 print("Successful Login")
-                
+                print("11111")
                 self.performSegue(withIdentifier: "LoginSegue", sender: self)
             }
 
@@ -830,7 +873,8 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
       // SwiftOverlays.showBlockingWaitOverlayWithText("Loading Session Feed")
         let name = nameTextField.text
         
-       
+      
+        
         
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user: User?, error) in
             if error != nil {
@@ -844,65 +888,80 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                     let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
+                    
                 }
                 
-                
+                return
 
-                return
-            }
-            self.user = (user?.uid)!
-            guard let uid = user?.uid else{
                 
-                return
             }
             
-            let imageName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+           
             
-                if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
-                    
-                    //storageRef.putData(uploadData)
-                
-                
-                    storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    
-                        if error != nil {
-                            print(error as Any)
-                            return
-                        }
-                    
-                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                    //print("link did not fail register")
+                    //self.facebookRect.isEnabled = false
+                    self.user1 = user
+                    self.user = (user?.uid)!
+                    guard let uid = user?.uid else{
                         
-                            var values = Dictionary<String, Any>()
-                            values["artistsBands"] = [String]()
-                            values["artistsONBs"] = [String]()
+                        return
+                    }
+                    
+                    let imageName = NSUUID().uuidString
+                    let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+                    
+                    if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+                        
+                        //storageRef.putData(uploadData)
+                        
+                        
+                        storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                             
-                            values["name"] = name
-                            values["email"] = email
-                            values["instruments"] = ""
-                            values["password"] = password
-                            values["invites"] = [String:Any]()
+                            if error != nil {
+                                print(error as Any)
+                                return
+                            }
                             
-                            values["artistUID"] = Auth.auth().currentUser?.uid
-                            values["bio"] = ""
-                            values["profileImageUrl"] = [profileImageUrl]
-                            
-                            values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
-                            values["media"] = [String:Any]()
-                            values["wantedAdResponses"] = [String]()
-                            values["wantedAds"] = [String]()
-                            values["acceptedAudits"] = [String:Any]()
-                            
-                            self.account = values
-                            
-                            
-                        self.performSegue(withIdentifier: "AboutONBSegue", sender: self)
-                            //self.registerUserIntoDatabaseWithUID(uid, values: values as [String : Any])
-                            
-                            
-                        }
-                    })
-                }
+                            if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                                
+                                var values = Dictionary<String, Any>()
+                                values["artistsBands"] = [String]()
+                                values["artistsONBs"] = [String]()
+                                
+                                values["name"] = name
+                                values["email"] = email
+                                values["instruments"] = ""
+                                values["password"] = password
+                                values["invites"] = [String:Any]()
+                                
+                                values["artistUID"] = Auth.auth().currentUser?.uid
+                                values["bio"] = ""
+                                values["profileImageUrl"] = [profileImageUrl]
+                                
+                                values["location"] = ["lat":Double((self.locationManager.location?.coordinate.latitude)!), "long": Double((self.locationManager.location?.coordinate.longitude)!)] as [String:Any]
+                                values["media"] = [String:Any]()
+                                values["wantedAdResponses"] = [String]()
+                                values["wantedAds"] = [String]()
+                                values["acceptedAudits"] = [String:Any]()
+                                
+                                self.account = values
+                                
+                                
+                                self.performSegue(withIdentifier: "AboutONBSegue", sender: self)
+                                //self.registerUserIntoDatabaseWithUID(uid, values: values as [String : Any])
+                                
+                                
+                            }
+                        })
+            }
+
+                    //self.fbCreateAccountVerified(user: user2!)
+                //self.performSegue(withIdentifier: , sender: self)
+            
+
+        
+            
+            
             
             
         })

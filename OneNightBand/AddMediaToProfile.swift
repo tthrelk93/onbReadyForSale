@@ -48,9 +48,18 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
     var movieURLFromPicker: NSURL?
     var curCell: VideoCollectionViewCell?
     
+    @IBAction func cancelPressed(_ sender: Any) {
+        performSegue(withIdentifier: "Cancel", sender: self)
+    }
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Cancel"{
+            if let vc = segue.destination as? profileRedesignViewController{
+                vc.userID = (Auth.auth().currentUser?.uid)!
+                vc.artistID = (Auth.auth().currentUser?.uid)!
+            }
+        }
         if segue.identifier == "AddMediaToMain"{
             if let vc = segue.destination as? profileRedesignViewController{
                 vc.userID = (Auth.auth().currentUser?.uid)!

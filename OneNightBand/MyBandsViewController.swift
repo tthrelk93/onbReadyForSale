@@ -20,6 +20,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
     var inviteDict = [String:Any]()
     @IBOutlet weak var bandTypeView: UIView!
    
+    @IBOutlet weak var cancelButton: UIButton!
     @IBAction func cancelPressed(_ sender: Any) {
         if self.sender == "joinBand"{
             performSegue(withIdentifier: "CreateNewToJoinBand", sender: self)
@@ -88,9 +89,9 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
     
        override func viewDidLoad() {
         super.viewDidLoad()
-       
+       cancelButton.layer.cornerRadius = 10
         let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
-        progressBounds = progressFrame.frame
+        /*progressBounds = progressFrame.frame
         
         progressBar = FlexibleSteppedProgressBar()
         progressBar.frame = progressBounds
@@ -104,8 +105,8 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
         progressBar.isUserInteractionEnabled = false
         progressBar.currentIndex = 1
         
-        progressBar.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(progressBar)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false*/
+       // self.view.addSubview(progressBar)
         
         //let horizontalConstraint = progressBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         /* let verticalConstraint = progressBar.topAnchor.constraintEqualToAnchor(

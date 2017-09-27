@@ -115,6 +115,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         //values["sender"] = currentUser!
                         self.inviteDict["bandID"] = sessReferenceAnyObject
                         //values["instrumentNeeded"] = self.buttonName
+                        self.inviteDict["instrumentNeeded"] = sessReferenceAnyObject
                         self.inviteDict["date"] = now//self.sessionDate
                         self.inviteDict["inviteKey"] = String(describing: tempID.key)
                         self.inviteDict["bandType"] = "onb"//self.bandType
@@ -122,7 +123,8 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         //values["bandType"] = self.bandType
                         self.inviteDict["bandName"] = self.bandNameTextField.text
                         self.inviteDict["sender"] = Auth.auth().currentUser?.uid
-                        //values["inviteResponse"] = String()
+                        self.inviteDict["instrumentNeeded"] = self.instrumentNeeded
+                        self.inviteDict["inviteResponse"] = ""
                         tempID.updateChildValues(self.inviteDict, withCompletionBlock: {(err, ref) in
                             if err != nil {
                                 print(err as Any)
@@ -197,7 +199,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
     
     weak var dismissalDelegate: DismissalDelegate?
     var ref = Database.database().reference()
-    
+    var instrumentNeeded = String()
     lazy var sessionImageViewButton: UIButton = {
         var tempButton = UIButton()
        
@@ -280,7 +282,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
         //need x, y, width, height constraints
         sessionImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         //sessionImageView.topAnchor.constraint(equalTo: popupView.topAnchor).isActive = true
-        sessionImageView.bottomAnchor.constraint(equalTo: bandNameTextField.topAnchor, constant: 20).isActive = true
+        sessionImageView.bottomAnchor.constraint(equalTo: bandNameTextField.topAnchor, constant: 10).isActive = true
         sessionImageView.widthAnchor.constraint(equalTo: sessionImageViewButton.widthAnchor).isActive = true
         sessionImageView.heightAnchor.constraint(equalTo: sessionImageViewButton.heightAnchor).isActive = true
         
@@ -305,7 +307,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
         popupView.layer.cornerRadius = 10
         cancelButton.layer.cornerRadius = 10
         datePicker.datePickerMode = UIDatePickerMode.date
-        datePicker.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        datePicker.backgroundColor = UIColor.clear
         datePicker.setValue(UIColor.white, forKeyPath: "textColor")
         datePicker.layer.cornerRadius = 10
         view.addSubview(sessionImageView)

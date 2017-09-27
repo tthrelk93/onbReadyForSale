@@ -30,10 +30,21 @@ protocol WantedAdDelegator : class
 
 
 
-class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SessionIDDest, PerformSegueInArtistFinderController, UIPickerViewDelegate,UIPickerViewDataSource, WantedAdDelegate, UITabBarDelegate{
+class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SessionIDDest, PerformSegueInArtistFinderController, UIPickerViewDelegate,UIPickerViewDataSource, WantedAdDelegate, UITabBarDelegate, MessagingDelegate{
     
    // var progressBar: FlexibleSteppedProgressBar!
+    /*func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        <#code#>
+    }*/
+    var fcmToken: String?
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        self.fcmToken = fcmToken
+    }
  
+   // func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+     //   print("Firebase registration token: \(fcmToken)")
+    //}
     @IBOutlet weak var searchByInstrumentButton: UIButton!
     @IBOutlet weak var searchNarrowView: UIView!
     @IBOutlet weak var postToBoardButton: UIButton!
@@ -57,6 +68,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         popOverVC.searchType = "af"
         popOverVC.parentView2 = self
         popOverVC.artistUID = self.artistUID
+         popOverVC.instrumentNeeded = self.instrumentArray[InstrumentPicker.selectedRow(inComponent: 0)]
         //popOverVC.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width - 50, height: self.view.frame.height - 50)
         self.view.addSubview(popOverVC.view)
         popOverVC.didMove(toParentViewController: self)
@@ -74,6 +86,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         popOverVC.view.frame = self.view.frame
         popOverVC.parentView2 = self
         popOverVC.artistUID = self.artistUID
+        popOverVC.instrumentNeeded = self.instrumentArray[InstrumentPicker.selectedRow(inComponent: 0)]
         self.view.addSubview(popOverVC.view)
         popOverVC.didMove(toParentViewController: self)
     }
@@ -405,7 +418,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                 if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "Current" {
                                    // tempCount += 1
                                     
-                                    if Int((self.tempCoordinate?.distance(from: self.tempCoordinate2!))!) <= 20000 {
+                                    if Int((self.tempCoordinate?.distance(from: self.tempCoordinate2!))!) <= 40000 {
                                         self.artistAfterDist.append(artist)
                                         
                                     }
@@ -422,7 +435,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                 } else {
                                    // tempCount += 1
                                     print("dist: \(Int((self.tempCoordinate?.distance(from: tempLoc))!))")
-                                    if Int((self.tempCoordinate?.distance(from: tempLoc))!) <= 20000 {
+                                    if Int((self.tempCoordinate?.distance(from: tempLoc))!) <= 90000 {
                                         print("justworkkkk")
                                         self.artistAfterDist.append(artist)
                                         
@@ -432,87 +445,8 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                     }
                                 }
                             }
-                          //  }
-                       // })
-       // })
-
-    
-                                //DispatchQueue.main.async{
-                                /*geoCoder.reverseGeocodeLocation(self.tempCoordinate!, completionHandler: { (placemarks, error) ->  Void in
-                                    var placeMark: CLPlacemark!
-                                    placeMark = placemarks?[0]
-                                    
-                                    if let city = placeMark.addressDictionary!["City"] as? NSString {
-                                       print("city \(city)")
-                                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                            for snap in snapshots{
-                                                if snap.key == "long"{
-                                                    self.tempLong2 = snap.value as? CLLocationDegrees
-                                                }else{
-                                                    self.tempLat2 = snap.value as? CLLocationDegrees
-                                                }
-                                            }
-                                        
-                                        
-                                            
-                                           // group2.leave()
-                                        
-                                      
-                                
-                                        }
-                                        self.tempCoordinate2 = CLLocation(latitude: self.tempLat2!, longitude: self.tempLong2!)
-                                //group2.notify(queue: .main, execute: {
-                                   // group3.enter()
-                                    geoCoder2.reverseGeocodeLocation(self.tempCoordinate2!, completionHandler: { (placemarks2, error) -> Void in
-                                        
-                                        var placeMark2: CLPlacemark!
-                                        placeMark2 = placemarks2?[0]
-                                        
-                                        if let city2 = placeMark2.addressDictionary!["City"] as? NSString {
-                                            print("city2: \(city2)")
-                                            var tempInt = self.distancePicker.selectedRow(inComponent: 0) as Int
-                                            if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "Current" {
-                                                tempCount += 1
-                                                
-                                                if Int((self.tempCoordinate?.distance(from: self.tempCoordinate2!))!) <= 2000 {
-                                                    self.artistAfterDist.append(artist)
-                                                    group.leave()
-                                                }
-                                            } else if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "All"{
-                                                tempCount += 1
-                                                
-                                                self.artistAfterDist.append(artist)
-                                                group.leave()
-                                            } else {
-                                                tempCount += 1
-                                                print("dist: \(Int((self.tempCoordinate?.distance(from: tempLoc))!))")
-                                                if Int((self.tempCoordinate?.distance(from: tempLoc))!) <= 1000 {
-                                                    print("justworkkkk")
-                                                    self.artistAfterDist.append(artist)
-                                                    if tempCount == self.artistArray.count - 1 {
-                                                        group.leave()
-                                                    }
-                                                }
-                                            }
-                                           // group3.leave()
-                                        }
-                                    
-                                    })
-                                    
-                                        
-                                        
-                                  //  })
-                                        
-                                    }
-                                    
-                                    })
-
-                                    
-                                
-                            }
+                            
                         })
-        })*/
-                            })
             
                             
                                 
@@ -521,11 +455,13 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
        
     
         group.notify(queue: .main, execute: {
+            var tempIP = IndexPath(item: 0, section: 0)
         if self.artistAfterDist.isEmpty{
             self.noArtistsFoundLabel.isHidden = false
             self.artistCollectionView.isHidden = true
             self.artistCollectionView.reloadData()
         }else{
+            
             self.noArtistsFoundLabel.isHidden = true
             self.artistCollectionView.isHidden = false
             self.InstrumentPicker.delegate = self
@@ -537,7 +473,13 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
             self.sizingCell = (cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! ArtistCardCell?
             self.artistCollectionView.dataSource = self
             self.artistCollectionView.delegate = self
+            
+            self.artistCollectionView.scrollToItem(at: tempIP, at: UICollectionViewScrollPosition.left, animated: true)
             self.artistCollectionView.reloadData()
+
+           
+            
+            
             
             self.artistCollectionView.gestureRecognizers?.first?.cancelsTouchesInView = false
             self.artistCollectionView.gestureRecognizers?.first?.delaysTouchesBegan = false
@@ -620,7 +562,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     
     @IBOutlet weak var collectPosition2: UIView!
     var collectPosition1Origin = CGPoint()
-    
+    var backButtonPressed: Bool?
     @IBOutlet weak var explanatoryView: UIView!
     
     @IBAction func infoButtonPressed(_ sender: Any) {
@@ -665,7 +607,11 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     backButton.layer.cornerRadius = 10
     collectPosition1Frame = collectPosition1.bounds
     pickerHolderPosition1Frame = pickerHolderPosition1.bounds
-    searchNarrowView.isHidden = false
+    if self.backButtonPressed == true{
+        searchNarrowView.isHidden = true
+    } else {
+        searchNarrowView.isHidden = false
+    }
     pickerHolderPosition1Origin = pickerHolderPosition1.frame.origin
     collectPosition1Origin = collectPosition1.frame.origin
     bandCollect.delegate = self
@@ -813,11 +759,11 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         var cityName = String()
         for (key, val) in city{
             if (key as String) == "city" || (key as String) == "longitude" || (key as String) == "latitude" || (key as String) == "state" {
-                if (key as String) == "city"{
-                    cityName = val as! String
-                    cityNameArray.append(cityName)
+                //if (key as String) == "city"{
+                   // cityName = val as! String
+                    //cityNameArray.append(cityName)
                     
-                }
+                //}
                 newCityDict[key] = val
             }
         }
@@ -862,6 +808,11 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                     for snap in snapshots{
                         if let dictionary = snap.value as? [String: AnyObject] {
                         let artist = Artist()
+                            for (key, val) in dictionary{
+                                print("key, val: \(key, val)")
+                                artist.setValue(val, forKey: key)
+                            }
+                            
                         artist.setValuesForKeys(dictionary)
                         self.artistArray.append(artist)
 
@@ -881,6 +832,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         if collectionView == artistCollectionView{
+            
         return artistAfterDist.count
         } else if collectionView == onbCollect{
             return onbIDArray.count
@@ -890,7 +842,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     }
     var selectedONB = ONB()
     var selectedBand = Band()
-    
+    var currentToken: String?
     var Timestamp: String {
         return "\(NSDate().timeIntervalSince1970 * 1000)"
     }
@@ -908,6 +860,8 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                         if snap.key == "noteToken"{
                             receivingToken = snap.value as! String
                             var messageID = String("\(Auth.auth().currentUser?.uid)" + "\(self.Timestamp)")
+                            
+                            
                             Messaging.messaging().sendMessage(["Invite": "You have received a new invite!"], to: "244864226642@gcm.googleapis.com", withMessageID: messageID!, timeToLive: 1000000)
                         }
                     }
@@ -923,14 +877,23 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                     let tempID = recipient.childByAutoId()
                     var values = [String: Any]()
                     values["sender"] = currentUser!
-                    values["bandID"] = self.onbArray[indexPath.row].onbID
+                    values["bandID"] = self.onbIDArray[indexPath.row]
                     values["instrumentNeeded"] = self.instrumentPicked
+                    values["inviteKey"] = tempID.key
+                    for onb in self.onbArray{
+                        let tempONB = onb
+                        if tempONB.onbID == self.onbIDArray[indexPath.row]{
+                            values["date"] = tempONB.onbDate
+                            values["artistCount"] = tempONB.onbArtists.count
+                            values["bandName"] = tempONB.onbName
+                            break
+                        }
+                    }
                     
-                    values["date"] = self.onbArray[indexPath.row].onbDate
-                    values["artistCount"] = self.onbArray[indexPath.row].onbArtists.count
+                    
                     values["bandType"] = "ONB"
-                    values["bandName"] = self.onbArray[indexPath.row].onbName
-                    values["inviteResponse"] = String()
+                    
+                    values["inviteResponse"] = ""
                     
                     
                     tempID.updateChildValues(values, withCompletionBlock: {(err, ref) in
@@ -961,15 +924,28 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                     let currentUser = Auth.auth().currentUser?.uid
                     let tempID = recipient.childByAutoId()
                     var values = [String: Any]()
-                    values["sender"] = currentUser!
-                    values["bandID"] = self.bandArray[indexPath.row].bandID
-                    values["instrumentNeeded"] = self.instrumentPicked
                     
+                   
+                    
+                    values["sender"] = currentUser!
+                    
+                    values["instrumentNeeded"] = self.instrumentPicked
+                    values["inviteKey"] = tempID.key
                     values["date"] = ""
-                    values["artistCount"] = self.bandArray[indexPath.row].bandMembers.count
+                    for band in self.bandArray{
+                        
+                        if band.bandID == self.bandIDArray[indexPath.row]{
+                           values["bandID"] = band.bandID
+                            values["artistCount"] = band.bandMembers.count
+                            values["bandName"] = band.bandName
+                            break
+                        }
+                    }
+
+                    
                     values["bandType"] = "Band"
-                    values["bandName"] = self.bandArray[indexPath.row].bandName
-                    values["inviteResponse"] = String()
+                    
+                    values["inviteResponse"] = ""
                     
                     
                     tempID.updateChildValues(values, withCompletionBlock: {(err, ref) in
